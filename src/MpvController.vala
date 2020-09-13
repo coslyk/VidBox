@@ -34,6 +34,8 @@ class VideoSplitter.MpvController : Object {
         mpv = new Mpv.Handle ();
         mpv.set_option_string ("hwdec", "auto");
         mpv.set_option_string ("keep-open", "always");
+        mpv.set_option_string ("pause", "yes");
+        mpv.set_option_string ("reset-on-next-file", "pause");
         mpv.observe_property (0, "duration", Mpv.Format.DOUBLE);
         mpv.observe_property (0, "playback-time", Mpv.Format.DOUBLE);
         mpv.request_log_messages ("info");
@@ -111,8 +113,7 @@ class VideoSplitter.MpvController : Object {
     // Seek
     public void seek (double pos) {
         if (pos != playback_time) {
-            string cmd[] = { "seek", pos.to_string (), "absolute", null };
-            mpv.command_async (0, cmd);
+            mpv.set_property_double ("playback-time", ref pos);
         }
     }
 
