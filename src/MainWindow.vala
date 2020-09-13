@@ -102,6 +102,16 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
 
+    // Frame navigation
+    [GtkCallback] private void on_prev_frame_button_clicked () {
+        mpv.previous_frame ();
+    }
+
+    [GtkCallback] private void on_next_frame_button_clicked () {
+        mpv.next_frame ();
+    }
+
+
     // Set start position
     [GtkCallback] private void on_set_start_button_clicked () {
         if (current_slice != null) {

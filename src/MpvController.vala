@@ -118,6 +118,18 @@ class VideoSplitter.MpvController : Object {
     }
 
 
+    // Next frame
+    public void next_frame () {
+        mpv.command_string ("frame-step");
+    }
+
+
+    // Previous frame
+    public void previous_frame () {
+        mpv.command_string ("frame-back-step");
+    }
+
+
     private bool process_mpv_events () {
         while (true) {
             unowned Mpv.Event event = mpv.wait_event ();
