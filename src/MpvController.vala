@@ -1,28 +1,30 @@
 
 class VideoSplitter.MpvController : Object {
 
+    // Mpv properties
+    [CCode (notify = false)]
+    public bool pause {
+        get { bool v; mpv.get_property_bool ("pause", out v); return v; }
+        set { mpv.set_property_bool ("pause", ref value); }
+    }
+
+    [CCode (notify = false)]
+    public double duration {
+        get { double v; mpv.get_property_double ("duration", out v); return v; }
+    }
+
+    [CCode (notify = false)]
+    public double playback_time { 
+        get { double v; mpv.get_property_double ("playback-time", out v); return v; }
+        set { mpv.set_property_double ("playback-time", ref value); }
+    }
+
     // Mpv handles
     private Mpv.RenderContext mpv_rctx;   // Must be put ahead of mpv so that Vala destroys it first
     private Mpv.Handle mpv;
 
     // GLArea to render videos
     public Gtk.GLArea video_area { get; construct; }
-
-    // Mpv properties
-    public bool pause {
-        get {
-            bool val = false;
-            mpv.get_property ("pause", Mpv.Format.FLAG, out val);
-            return val;
-        }
-        set {
-            mpv.set_property_bool ("pause", ref value);
-        }
-    }
-
-    public string filename { get; private set; }
-    public double duration { get; private set; }
-    public double playback_time { get; private set; }
 
     // Init
     public MpvController (Gtk.GLArea video_area) {
@@ -36,8 +38,11 @@ class VideoSplitter.MpvController : Object {
         mpv.set_option_string ("keep-open", "always");
         mpv.set_option_string ("pause", "yes");
         mpv.set_option_string ("reset-on-next-file", "pause");
+
+        mpv.observe_property (0, "pause", Mpv.Format.FLAG);
         mpv.observe_property (0, "duration", Mpv.Format.DOUBLE);
         mpv.observe_property (0, "playback-time", Mpv.Format.DOUBLE);
+
         mpv.request_log_messages ("info");
 
         if (mpv.initialize () < 0) {
@@ -104,17 +109,8 @@ class VideoSplitter.MpvController : Object {
 
     // Open video
     public void open (string uri) {
-        filename = uri;
-        string cmd[] = { "loadfile", uri, null };
+        (unowned string)[] cmd = { "loadfile", uri, null };
         mpv.command_async (0, cmd);
-    }
-    
-
-    // Seek
-    public void seek (double pos) {
-        if (pos != playback_time) {
-            mpv.set_property_double ("playback-time", ref pos);
-        }
     }
 
 
@@ -139,13 +135,8 @@ class VideoSplitter.MpvController : Object {
 
                 case Mpv.EventID.PROPERTY_CHANGE: {
                     unowned Mpv.EventProperty prop = ((Mpv.Event<Mpv.EventProperty>) event).data;
-                    if (prop.format == Mpv.Format.NONE) {
-                        break;
-                    }
-                    switch (prop.name) {
-                        case "playback-time": playback_time = * (double*) prop.data; break;
-                        case "duration":      duration      = * (double*) prop.data; break;
-                        default: break;
+                    if (prop.format != Mpv.Format.NONE) {
+                        notify_property (prop.name);
                     }
                     break;
                 }

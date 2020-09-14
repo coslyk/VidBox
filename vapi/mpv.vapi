@@ -135,8 +135,12 @@ namespace Mpv {
         [CCode (cname = "mpv_set_property")]
         public Mpv.Error set_property_double (string name, ref double data, [CCode (pos = 1.5)] Mpv.Format format = Mpv.Format.DOUBLE);
 
-        [CCode (simple_generics = true, has_target = false)]
-        public Mpv.Error get_property<T> (string name, Mpv.Format format, out T data);
+        [CCode (cname = "mpv_get_property")]
+        public Mpv.Error get_property_bool (string name, out bool data, [CCode (pos = 1.5)] Mpv.Format format = Mpv.Format.FLAG);
+        [CCode (cname = "mpv_get_property")]
+        public Mpv.Error get_property_int64 (string name, out int64 data, [CCode (pos = 1.5)] Mpv.Format format = Mpv.Format.INT64);
+        [CCode (cname = "mpv_get_property")]
+        public Mpv.Error get_property_double (string name, out double data, [CCode (pos = 1.5)] Mpv.Format format = Mpv.Format.DOUBLE);
 
         public Mpv.Error observe_property (uint64 reply_userdata, string name, Mpv.Format format);
         public Mpv.Error request_event (EventID event, bool enable);

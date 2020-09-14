@@ -23,7 +23,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         });
 
         mpv.notify["duration"].connect (() => {
-            current_slice = new SliceInfo (mpv.filename, mpv.duration);
+            current_slice = new SliceInfo (mpv.duration);
             progress_bar.queue_draw ();
             start_pos_label.label = Utils.time2str (0);
             end_pos_label.label = Utils.time2str (mpv.duration);
@@ -59,12 +59,12 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         // Draw background
         int width = progress_bar.get_allocated_width ();
         int height = progress_bar.get_allocated_height ();
+        double duration = mpv.duration;
         cr.set_source_rgb (0.3, 0.3, 0.3);
         cr.paint ();
         
-        if (mpv.duration > 0) {
+        if (duration > 0 && current_slice != null) {
             // Draw slice
-            double duration = mpv.duration;
             double start_pos = current_slice.start_pos * width / duration;
             double end_pos = current_slice.end_pos * width / duration;
 
@@ -73,7 +73,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             cr.fill ();
 
             // Draw current pos
-            int pos = (int) (mpv.playback_time * width / duration);
+            double playback_time = mpv.playback_time;
+            int pos = (int) (playback_time * width / duration);
             cr.set_source_rgb (1, 1, 1);
             cr.set_line_width (1);
             cr.move_to (pos, 0);
@@ -87,7 +88,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             cr.move_to (width / 2 - 52, 26);
             cr.set_source_rgb (1, 1, 1);
             cr.set_font_size (18);
-            cr.show_text (Utils.time2str (mpv.playback_time));
+            cr.show_text (Utils.time2str (playback_time));
         }
         return true;
     }
@@ -96,8 +97,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Set playback time
     [GtkCallback] private bool on_progress_bar_pressed (Gtk.Widget widget, Gdk.EventButton event) {
         int width = widget.get_allocated_width ();
-        double pos = event.x * mpv.duration / width;
-        mpv.seek (pos);
+        mpv.playback_time = event.x * mpv.duration / width;
         return true;
     }
 
