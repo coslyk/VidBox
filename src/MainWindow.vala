@@ -3,12 +3,13 @@
 public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     private MpvController mpv;
-    private SliceInfo? current_slice;
+    private SegmentWidget? current_slice;
     [GtkChild] private Gtk.GLArea video_area;
     [GtkChild] private Gtk.DrawingArea progress_bar;
     [GtkChild] private Gtk.Label start_pos_label;
     [GtkChild] private Gtk.Label end_pos_label;
     [GtkChild] private Gtk.HeaderBar header_bar;
+    [GtkChild] private Gtk.ListBox segments_listbox;
         
 
     public MainWindow(Gtk.Application application) {
@@ -23,7 +24,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         });
 
         mpv.notify["duration"].connect (() => {
-            current_slice = new SliceInfo (mpv.duration);
+            // Reinit segment list
+            segments_listbox.foreach ((item) => segments_listbox.remove (item));
+            current_slice = new SegmentWidget (mpv.duration);
+            segments_listbox.add (current_slice);
+            current_slice.show ();
+
+            // Redraw progressbar
             progress_bar.queue_draw ();
             start_pos_label.label = Utils.time2str (0);
             end_pos_label.label = Utils.time2str (mpv.duration);

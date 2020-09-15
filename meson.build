@@ -19,10 +19,10 @@ add_project_arguments(['--gresourcesdir', join_paths(meson.source_root(), 'data'
 # Create a new executable
 executable(
     meson.project_name(),
-    'src/SliceInfo.vala',
     'src/Application.vala',
     'src/MainWindow.vala',
     'src/MpvController.vala',
+    'src/SegmentWidget.vala',
     'src/Utils.vala',
     asresources,
     dependencies: [
