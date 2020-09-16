@@ -3,13 +3,14 @@
 public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     private MpvController mpv;
-    private SegmentWidget? current_slice;
+    private SegmentWidget? current_segment;
     [GtkChild] private Gtk.GLArea video_area;
     [GtkChild] private Gtk.DrawingArea progress_bar;
     [GtkChild] private Gtk.Label start_pos_label;
     [GtkChild] private Gtk.Label end_pos_label;
     [GtkChild] private Gtk.HeaderBar header_bar;
     [GtkChild] private Gtk.ListBox segments_listbox;
+    private int segments_count = 0;
         
 
     public MainWindow(Gtk.Application application) {
@@ -19,22 +20,66 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     construct {
         mpv = new MpvController (video_area);
 
-        mpv.notify["playback-time"].connect (() => {
+        mpv.notify["playback-time"].connect (() => {             // Time updated
             progress_bar.queue_draw ();
         });
 
-        mpv.notify["duration"].connect (() => {
-            // Reinit segment list
-            segments_listbox.foreach ((item) => segments_listbox.remove (item));
-            current_slice = new SegmentWidget (mpv.duration);
-            segments_listbox.add (current_slice);
-            current_slice.show ();
+        mpv.notify["duration"].connect (reinit_segments_list);   // New file loaded
+    }
 
-            // Redraw progressbar
-            progress_bar.queue_draw ();
-            start_pos_label.label = Utils.time2str (0);
-            end_pos_label.label = Utils.time2str (mpv.duration);
-        });
+
+    // Update progressbar, including time labels
+    private void update_progressbar () {
+        progress_bar.queue_draw ();
+        start_pos_label.label = Utils.time2str (current_segment.start_pos);
+        end_pos_label.label = Utils.time2str (current_segment.end_pos);
+    }
+
+
+    // Clear / reinit segments list
+    [GtkCallback] private void reinit_segments_list () {
+        segments_listbox.foreach ((item) => segments_listbox.remove (item));
+        current_segment = null;
+        segments_count = 0;
+
+        if (mpv.duration > 0) {
+            current_segment = new SegmentWidget (mpv.duration);
+            segments_listbox.add (current_segment);
+            current_segment.show ();
+            segments_count++;
+            update_progressbar ();
+        }
+    }
+
+
+    // Add segments
+    [GtkCallback] private void add_segment () {
+        double duration = mpv.duration;
+        if (duration > 0) {
+            var item = new SegmentWidget (duration);
+            segments_listbox.add (item);
+            item.show ();
+            segments_count++;
+        }
+    }
+
+
+    // Remove selected segment
+    [GtkCallback] private void remove_selected_segment () {
+        unowned Gtk.ListBoxRow item = segments_listbox.get_selected_row ();
+        if (item != null && segments_count > 1) {
+            item.destroy ();
+            segments_count--;
+            current_segment = segments_listbox.get_row_at_index (0).get_child () as SegmentWidget;
+            update_progressbar ();
+        }
+    }
+
+
+    // 
+    [GtkCallback] private void on_segments_listbox_row_activated (Gtk.ListBoxRow row) {
+        current_segment = row.get_child () as SegmentWidget;
+        update_progressbar ();
     }
 
 
@@ -70,10 +115,10 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         cr.set_source_rgb (0.3, 0.3, 0.3);
         cr.paint ();
         
-        if (duration > 0 && current_slice != null) {
+        if (duration > 0 && current_segment != null) {
             // Draw slice
-            double start_pos = current_slice.start_pos * width / duration;
-            double end_pos = current_slice.end_pos * width / duration;
+            double start_pos = current_segment.start_pos * width / duration;
+            double end_pos = current_segment.end_pos * width / duration;
 
             cr.set_source_rgb (0.3, 0.6, 0.3);
             cr.rectangle (start_pos, 0, end_pos - start_pos, height);
@@ -121,13 +166,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Set start position
     [GtkCallback] private void on_set_start_button_clicked () {
-        if (current_slice != null) {
+        if (current_segment != null) {
             double pos = mpv.playback_time;
-            current_slice.start_pos = pos;
+            current_segment.start_pos = pos;
             start_pos_label.label = Utils.time2str (pos);
 
-            if (pos > current_slice.end_pos) {
-                current_slice.end_pos = mpv.duration;
+            if (pos > current_segment.end_pos) {
+                current_segment.end_pos = mpv.duration;
                 end_pos_label.label = Utils.time2str (mpv.duration);
             }
 
@@ -136,15 +181,15 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
 
-    // Set start position
+    // Set end position
     [GtkCallback] private void on_set_end_button_clicked () {
-        if (current_slice != null) {
+        if (current_segment != null) {
             double pos = mpv.playback_time;
-            current_slice.end_pos = pos;
+            current_segment.end_pos = pos;
             end_pos_label.label = Utils.time2str (pos);
 
-            if (pos < current_slice.start_pos) {
-                current_slice.start_pos = 0;
+            if (pos < current_segment.start_pos) {
+                current_segment.start_pos = 0;
                 start_pos_label.label = "00:00:00.000";
             }
 
