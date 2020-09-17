@@ -9,6 +9,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.Label start_pos_label;
     [GtkChild] private Gtk.Label end_pos_label;
     [GtkChild] private Gtk.HeaderBar header_bar;
+    [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.ListBox segments_listbox;
     private int segments_count = 0;
         
@@ -20,11 +21,38 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     construct {
         mpv = new MpvController (video_area);
 
-        mpv.notify["playback-time"].connect (() => {             // Time updated
-            progress_bar.queue_draw ();
-        });
+        mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());  // Time updated
+        mpv.notify["duration"].connect (reinit_segments_list);                   // New file loaded
 
-        mpv.notify["duration"].connect (reinit_segments_list);   // New file loaded
+        // Init menus
+        var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
+        var cut_menu_model = menu_builder.get_object ("cut-menu") as Menu;
+        cut_button.set_menu_model (cut_menu_model);
+
+        ActionEntry win_action_entries[] = {
+            ActionEntry () {
+                name = "cut_mode",
+                parameter_type = "s",
+                state = "'seperate'",
+                change_state = (action, state) => action.set_state (state)
+            },
+            ActionEntry () {
+                name = "frame_mode",
+                parameter_type = "s",
+                state = "'keyframe'",
+                change_state = (action, state) => action.set_state (state)
+            },
+            ActionEntry () {
+                name = "keep_audio",
+                state = "true",
+                change_state = (action, state) => action.set_state (state)
+            },
+            ActionEntry () {
+                name = "cut_video",
+                activate = () => print ("cut_video\n")
+            }
+        };
+        add_action_entries (win_action_entries, this);
     }
 
 
@@ -76,7 +104,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
 
-    // 
+    // Selected segment changes
     [GtkCallback] private void on_segments_listbox_row_activated (Gtk.ListBoxRow row) {
         current_segment = row.get_child () as SegmentWidget;
         update_progressbar ();

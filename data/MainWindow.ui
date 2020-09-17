@@ -12,11 +12,6 @@
     <property name="can_focus">False</property>
     <property name="icon_name">list-remove-all-symbolic</property>
   </object>
-  <object class="GtkImage" id="cut_image">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">edit-cut-symbolic</property>
-  </object>
   <object class="GtkImage" id="jump_end_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -92,13 +87,17 @@
           </object>
         </child>
         <child>
-          <object class="GtkButton" id="cut_button">
+          <object class="GtkMenuButton" id="cut_button">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="image">cut_image</property>
-            <property name="relief">half</property>
-            <property name="always_show_image">True</property>
+            <child>
+              <object class="GtkImage" id="cut_image">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">edit-cut-symbolic</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="pack_type">end</property>
