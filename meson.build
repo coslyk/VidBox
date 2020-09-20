@@ -20,6 +20,7 @@ add_project_arguments(['--gresourcesdir', join_paths(meson.source_root(), 'data'
 executable(
     meson.project_name(),
     'src/Application.vala',
+    'src/Ffmpeg.vala',
     'src/MainWindow.vala',
     'src/MpvController.vala',
     'src/SegmentWidget.vala',
@@ -29,7 +30,9 @@ executable(
         dependency('epoxy'),
         dependency('gdk-wayland-3.0'),
         dependency('gdk-x11-3.0'),
+        dependency('gio-2.0'),
         dependency('gtk+-3.0'),
+        dependency('json-glib-1.0'),
         dependency('mpv'),
         meson.get_compiler('c').find_library('m', required : true)
     ],

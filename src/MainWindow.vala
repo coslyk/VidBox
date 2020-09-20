@@ -11,6 +11,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.HeaderBar header_bar;
     [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.ListBox segments_listbox;
+    private string filepath;
+    private string video_format;
     private int segments_count = 0;
         
 
@@ -49,7 +51,9 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             },
             ActionEntry () {
                 name = "cut_video",
-                activate = () => print ("cut_video\n")
+                activate = () => {
+                    run_ffmpeg_cut.begin ();
+                }
             }
         };
         add_action_entries (win_action_entries, this);
@@ -114,22 +118,46 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Open file
     [GtkCallback] private void on_open_button_clicked () {
 
+        // Show dialog
         var dialog = new Gtk.FileChooserDialog (
             "Open file", this, Gtk.FileChooserAction.OPEN,
             "Cancel", Gtk.ResponseType.CANCEL,
             "Open", Gtk.ResponseType.ACCEPT
         );
         var result = dialog.run ();
-        if (result == Gtk.ResponseType.ACCEPT) {
-            string filename = dialog.get_filename ();
-            mpv.open (filename);
-            string basename = Path.get_basename (filename);
+
+        // File selected?
+        if (result != Gtk.ResponseType.ACCEPT) {
+            dialog.destroy ();
+            return;
+        }
+        
+        filepath = dialog.get_filename ();
+        dialog.destroy ();
+        
+        try {
+            // Get file info
+            video_format = Ffmpeg.detect_format (filepath);
+
+            // Open file
+            mpv.open (filepath);
+            string basename = Path.get_basename (filepath);
             if (basename.char_count () > 50) {
                 basename = basename.substring (0, basename.index_of_nth_char (50)) + "...";
             }
             header_bar.subtitle = basename;
         }
-        dialog.destroy ();
+        catch (Error e) {
+            var msgdlg = new Gtk.MessageDialog (
+                this,
+                Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.CLOSE,
+                "Error parsing file: %s", e.message
+            );
+            msgdlg.run ();
+            msgdlg.destroy ();
+        }
     }
 
 
@@ -229,5 +257,15 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Play / Pause
     [GtkCallback] private void on_pause_button_clicked () {
         mpv.pause = !mpv.pause;
+    }
+
+
+    // Cut!
+    private async void run_ffmpeg_cut () {
+        var children = segments_listbox.get_children ();
+        foreach (weak Gtk.Widget row in children) {
+            unowned SegmentWidget? segment = (row as Gtk.ListBoxRow).get_child () as SegmentWidget;
+            yield Ffmpeg.cut (filepath, video_format, segment.start_pos, segment.end_pos, true, false);
+        }
     }
 }
