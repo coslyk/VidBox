@@ -3,14 +3,14 @@
 public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     private MpvController mpv;
-    private SegmentWidget? current_segment;
+    private TaskItem? selected_item;
     [GtkChild] private Gtk.GLArea video_area;
     [GtkChild] private Gtk.DrawingArea progress_bar;
     [GtkChild] private Gtk.Label start_pos_label;
     [GtkChild] private Gtk.Label end_pos_label;
     [GtkChild] private Gtk.HeaderBar header_bar;
     [GtkChild] private Gtk.MenuButton cut_button;
-    [GtkChild] private Gtk.ListBox segments_listbox;
+    [GtkChild] private Gtk.ListBox listbox;
     private TaskManager task_manager;
         
 
@@ -20,8 +20,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     construct {
         task_manager = new TaskManager ();
-        segments_listbox.bind_model (task_manager, (item) => {
-            var task = ((SegmentWidget) item);
+        listbox.bind_model (task_manager, (item) => {
+            var task = ((TaskItem) item);
             var label = new Gtk.Label (task.create_description ());
             task.notify.connect (() => label.label = task.create_description ());
             return label;
@@ -29,8 +29,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
         mpv = new MpvController (video_area);
 
-        mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());  // Time updated
-        mpv.notify["duration"].connect (add_segment);                            // New file loaded
+        mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());          // Time updated
+        mpv.notify["duration"].connect (() => task_manager.add_item (0, mpv.duration));  // New file loaded
 
         // Init menus
         var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
@@ -68,44 +68,44 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Update progressbar, including time labels
     private void update_progressbar () {
-        if (current_segment != null) {
+        if (selected_item != null) {
             progress_bar.queue_draw ();
-            start_pos_label.label = Utils.time2str (current_segment.start_pos);
-            end_pos_label.label = Utils.time2str (current_segment.end_pos);
+            start_pos_label.label = Utils.time2str (selected_item.start_pos);
+            end_pos_label.label = Utils.time2str (selected_item.end_pos);
         }
     }
 
 
-    // Clear / reinit segments list
-    [GtkCallback] private void reinit_segments_list () {
+    // Clear list
+    [GtkCallback] private void on_clear_button_clicked () {
         task_manager.clear ();
-        current_segment = null;
+        selected_item = null;
     }
 
 
     // Add segments
-    [GtkCallback] private void add_segment () {
+    [GtkCallback] private void on_add_button_clicked () {
         double duration = mpv.duration;
         if (duration > 0) {
-            current_segment = task_manager.add_item (0, duration);
+            selected_item = task_manager.add_item (0, duration);
         }
     }
 
     // Remove selected segment
-    [GtkCallback] private void remove_selected_segment () {
-        unowned Gtk.ListBoxRow item = segments_listbox.get_selected_row ();
+    [GtkCallback] private void on_remove_button_clicked () {
+        unowned Gtk.ListBoxRow item = listbox.get_selected_row ();
         if (item != null) {
             int index = item.get_index ();
             task_manager.remove_item (index);
-            current_segment = (SegmentWidget) task_manager.get_item (0);
+            selected_item = (TaskItem) task_manager.get_item (0);
             update_progressbar ();
         }
     }
 
 
     // Selected segment changes
-    [GtkCallback] private void on_segments_listbox_row_activated (Gtk.ListBoxRow row) {
-        current_segment = (SegmentWidget) task_manager.get_item (row.get_index ());
+    [GtkCallback] private void on_listbox_row_activated (Gtk.ListBoxRow row) {
+        selected_item = (TaskItem) task_manager.get_item (row.get_index ());
         update_progressbar ();
     }
 
@@ -166,10 +166,10 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         cr.set_source_rgb (0.3, 0.3, 0.3);
         cr.paint ();
         
-        if (duration > 0 && current_segment != null) {
+        if (duration > 0 && selected_item != null) {
             // Draw slice
-            double start_pos = current_segment.start_pos * width / duration;
-            double end_pos = current_segment.end_pos * width / duration;
+            double start_pos = selected_item.start_pos * width / duration;
+            double end_pos = selected_item.end_pos * width / duration;
 
             cr.set_source_rgb (0.3, 0.6, 0.3);
             cr.rectangle (start_pos, 0, end_pos - start_pos, height);
@@ -217,13 +217,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Set start position
     [GtkCallback] private void on_set_start_button_clicked () {
-        if (current_segment != null) {
+        if (selected_item != null) {
             double pos = mpv.playback_time;
-            current_segment.start_pos = pos;
+            selected_item.start_pos = pos;
             start_pos_label.label = Utils.time2str (pos);
 
-            if (pos > current_segment.end_pos) {
-                current_segment.end_pos = mpv.duration;
+            if (pos > selected_item.end_pos) {
+                selected_item.end_pos = mpv.duration;
                 end_pos_label.label = Utils.time2str (mpv.duration);
             }
 
@@ -234,13 +234,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Set end position
     [GtkCallback] private void on_set_end_button_clicked () {
-        if (current_segment != null) {
+        if (selected_item != null) {
             double pos = mpv.playback_time;
-            current_segment.end_pos = pos;
+            selected_item.end_pos = pos;
             end_pos_label.label = Utils.time2str (pos);
 
-            if (pos < current_segment.start_pos) {
-                current_segment.start_pos = 0;
+            if (pos < selected_item.start_pos) {
+                selected_item.start_pos = 0;
                 start_pos_label.label = "00:00:00.000";
             }
 

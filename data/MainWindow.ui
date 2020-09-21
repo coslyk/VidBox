@@ -47,7 +47,7 @@
     <property name="icon_name">go-previous-symbolic</property>
     <property name="icon_size">3</property>
   </object>
-  <object class="GtkImage" id="remove_button">
+  <object class="GtkImage" id="remove_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">list-remove-symbolic</property>
@@ -130,7 +130,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="slides_label">
+              <object class="GtkLabel" id="listbox_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_top">6</property>
@@ -144,12 +144,12 @@
               </packing>
             </child>
             <child>
-              <object class="GtkListBox" id="segments_listbox">
+              <object class="GtkListBox" id="listbox">
                 <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="vexpand">True</property>
-                <signal name="row-activated" handler="on_segments_listbox_row_activated" swapped="no"/>
+                <signal name="row-activated" handler="on_listbox_row_activated" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -158,7 +158,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="segment_add_button">
+              <object class="GtkButton" id="add_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -166,7 +166,7 @@
                 <property name="image">add_image</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
-                <signal name="clicked" handler="add_segment" swapped="no"/>
+                <signal name="clicked" handler="on_add_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -174,15 +174,15 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="segment_remove_button">
+              <object class="GtkButton" id="remove_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Remove selected segment</property>
-                <property name="image">remove_button</property>
+                <property name="image">remove_image</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
-                <signal name="clicked" handler="remove_selected_segment" swapped="no"/>
+                <signal name="clicked" handler="on_remove_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -190,7 +190,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="segment_clear_button">
+              <object class="GtkButton" id="clear_button">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -198,7 +198,7 @@
                 <property name="image">clear_image</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
-                <signal name="clicked" handler="reinit_segments_list" swapped="no"/>
+                <signal name="clicked" handler="on_clear_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">3</property>

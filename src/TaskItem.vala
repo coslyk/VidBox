@@ -1,12 +1,12 @@
 
 using VideoSplitter.Utils;
 
-class VideoSplitter.SegmentWidget : Object {
+class VideoSplitter.TaskItem : Object {
 
     public double start_pos { get; set construct; }
     public double end_pos { get; set construct; }
 
-    public SegmentWidget (double start_pos, double end_pos) {
+    public TaskItem (double start_pos, double end_pos) {
         Object (start_pos: start_pos, end_pos: end_pos);
     }
 

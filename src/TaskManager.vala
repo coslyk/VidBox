@@ -1,7 +1,7 @@
 
 class VideoSplitter.TaskManager : Object, ListModel {
 
-    private Array<SegmentWidget> items = new Array<SegmentWidget> ();
+    private Array<TaskItem> items = new Array<TaskItem> ();
     private string filepath;
     private string format;
 
@@ -15,8 +15,8 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
 
     // Add item
-    public SegmentWidget add_item (double start_pos, double end_pos) {
-        var item = new SegmentWidget (start_pos, end_pos);
+    public TaskItem add_item (double start_pos, double end_pos) {
+        var item = new TaskItem (start_pos, end_pos);
         items.append_val (item);
         items_changed (items.length - 1, 0, 1);
         return item;
@@ -40,7 +40,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     // Cut!
     public async void run_ffmpeg_cut () throws Error {
         for (uint i = 0; i < items.length ; i++) {
-            unowned SegmentWidget item = items.index (i);
+            unowned TaskItem item = items.index (i);
             yield Ffmpeg.cut (filepath, format, item.start_pos, item.end_pos, true, false);
         }
     }
@@ -48,7 +48,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
     // Implement ListModel
     public Type get_item_type () {
-        return typeof (SegmentWidget);
+        return typeof (TaskItem);
     }
 
     public Object? get_item (uint position) {

@@ -23,7 +23,7 @@ executable(
     'src/Ffmpeg.vala',
     'src/MainWindow.vala',
     'src/MpvController.vala',
-    'src/SegmentWidget.vala',
+    'src/TaskItem.vala',
     'src/TaskManager.vala',
     'src/Utils.vala',
     asresources,
