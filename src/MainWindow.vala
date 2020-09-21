@@ -30,7 +30,10 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         mpv = new MpvController (video_area);
 
         mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());          // Time updated
-        mpv.notify["duration"].connect (() => task_manager.add_item (0, mpv.duration));  // New file loaded
+        mpv.notify["duration"].connect (() => {
+            selected_item = task_manager.add_item (0, mpv.duration);
+            update_progressbar ();
+        });  // New file loaded
 
         // Init menus
         var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
@@ -88,6 +91,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         double duration = mpv.duration;
         if (duration > 0) {
             selected_item = task_manager.add_item (0, duration);
+            update_progressbar ();
         }
     }
 
@@ -166,16 +170,18 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         cr.set_source_rgb (0.3, 0.3, 0.3);
         cr.paint ();
         
+        // Draw slice
         if (duration > 0 && selected_item != null) {
-            // Draw slice
             double start_pos = selected_item.start_pos * width / duration;
             double end_pos = selected_item.end_pos * width / duration;
 
             cr.set_source_rgb (0.3, 0.6, 0.3);
             cr.rectangle (start_pos, 0, end_pos - start_pos, height);
             cr.fill ();
+        }
 
-            // Draw current pos
+        // Draw current pos
+        if (duration > 0) {
             double playback_time = mpv.playback_time;
             int pos = (int) (playback_time * width / duration);
             cr.set_source_rgb (1, 1, 1);
