@@ -134,7 +134,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         
         filepath = dialog.get_filename ();
         dialog.destroy ();
-        
+
         try {
             // Get file info
             video_format = Ffmpeg.detect_format (filepath);
@@ -263,9 +263,21 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Cut!
     private async void run_ffmpeg_cut () {
         var children = segments_listbox.get_children ();
-        foreach (weak Gtk.Widget row in children) {
-            unowned SegmentWidget? segment = (row as Gtk.ListBoxRow).get_child () as SegmentWidget;
-            yield Ffmpeg.cut (filepath, video_format, segment.start_pos, segment.end_pos, true, false);
+        try {
+            foreach (weak Gtk.Widget row in children) {
+                unowned SegmentWidget? segment = (row as Gtk.ListBoxRow).get_child () as SegmentWidget;
+                yield Ffmpeg.cut (filepath, video_format, segment.start_pos, segment.end_pos, true, false);
+            }
+        } catch (Error e) {
+            var msgdlg = new Gtk.MessageDialog (
+                this,
+                Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.CLOSE,
+                "Fails to cut: %s", e.message
+            );
+            msgdlg.run ();
+            msgdlg.destroy ();
         }
     }
 }
