@@ -11,9 +11,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.HeaderBar header_bar;
     [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.ListBox segments_listbox;
-    private string filepath;
-    private string video_format;
-    private int segments_count = 0;
+    private TaskManager task_manager;
         
 
     public MainWindow(Gtk.Application application) {
@@ -21,10 +19,18 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
     construct {
+        task_manager = new TaskManager ();
+        segments_listbox.bind_model (task_manager, (item) => {
+            var task = ((SegmentWidget) item);
+            var label = new Gtk.Label (task.create_description ());
+            task.notify.connect (() => label.label = task.create_description ());
+            return label;
+        });
+
         mpv = new MpvController (video_area);
 
         mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());  // Time updated
-        mpv.notify["duration"].connect (reinit_segments_list);                   // New file loaded
+        mpv.notify["duration"].connect (add_segment);                            // New file loaded
 
         // Init menus
         var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
@@ -62,25 +68,18 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Update progressbar, including time labels
     private void update_progressbar () {
-        progress_bar.queue_draw ();
-        start_pos_label.label = Utils.time2str (current_segment.start_pos);
-        end_pos_label.label = Utils.time2str (current_segment.end_pos);
+        if (current_segment != null) {
+            progress_bar.queue_draw ();
+            start_pos_label.label = Utils.time2str (current_segment.start_pos);
+            end_pos_label.label = Utils.time2str (current_segment.end_pos);
+        }
     }
 
 
     // Clear / reinit segments list
     [GtkCallback] private void reinit_segments_list () {
-        segments_listbox.foreach ((item) => segments_listbox.remove (item));
+        task_manager.clear ();
         current_segment = null;
-        segments_count = 0;
-
-        if (mpv.duration > 0) {
-            current_segment = new SegmentWidget (mpv.duration);
-            segments_listbox.add (current_segment);
-            current_segment.show ();
-            segments_count++;
-            update_progressbar ();
-        }
     }
 
 
@@ -88,21 +87,17 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkCallback] private void add_segment () {
         double duration = mpv.duration;
         if (duration > 0) {
-            var item = new SegmentWidget (duration);
-            segments_listbox.add (item);
-            item.show ();
-            segments_count++;
+            current_segment = task_manager.add_item (0, duration);
         }
     }
-
 
     // Remove selected segment
     [GtkCallback] private void remove_selected_segment () {
         unowned Gtk.ListBoxRow item = segments_listbox.get_selected_row ();
-        if (item != null && segments_count > 1) {
-            item.destroy ();
-            segments_count--;
-            current_segment = segments_listbox.get_row_at_index (0).get_child () as SegmentWidget;
+        if (item != null) {
+            int index = item.get_index ();
+            task_manager.remove_item (index);
+            current_segment = (SegmentWidget) task_manager.get_item (0);
             update_progressbar ();
         }
     }
@@ -110,7 +105,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Selected segment changes
     [GtkCallback] private void on_segments_listbox_row_activated (Gtk.ListBoxRow row) {
-        current_segment = row.get_child () as SegmentWidget;
+        current_segment = (SegmentWidget) task_manager.get_item (row.get_index ());
         update_progressbar ();
     }
 
@@ -132,12 +127,12 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             return;
         }
         
-        filepath = dialog.get_filename ();
+        string filepath = dialog.get_filename ();
         dialog.destroy ();
 
         try {
             // Get file info
-            video_format = Ffmpeg.detect_format (filepath);
+            task_manager.new_file (filepath);
 
             // Open file
             mpv.open (filepath);
@@ -262,12 +257,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Cut!
     private async void run_ffmpeg_cut () {
-        var children = segments_listbox.get_children ();
         try {
-            foreach (weak Gtk.Widget row in children) {
-                unowned SegmentWidget? segment = (row as Gtk.ListBoxRow).get_child () as SegmentWidget;
-                yield Ffmpeg.cut (filepath, video_format, segment.start_pos, segment.end_pos, true, false);
-            }
+            yield task_manager.run_ffmpeg_cut ();
         } catch (Error e) {
             var msgdlg = new Gtk.MessageDialog (
                 this,

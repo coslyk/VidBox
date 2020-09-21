@@ -24,6 +24,7 @@ executable(
     'src/MainWindow.vala',
     'src/MpvController.vala',
     'src/SegmentWidget.vala',
+    'src/TaskManager.vala',
     'src/Utils.vala',
     asresources,
     dependencies: [
