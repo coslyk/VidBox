@@ -33,7 +33,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     // Remove all items
     public void clear () {
         items_changed (0, items.length, 0);
-        items.remove_range (0, items.length);
+        items = new Array<TaskItem> ();
     }
 
 
