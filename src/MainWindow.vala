@@ -3,6 +3,7 @@
 public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     private MpvController mpv;
+    private TaskManager task_manager;
     private TaskItem? selected_item;
     [GtkChild] private Gtk.GLArea video_area;
     [GtkChild] private Gtk.DrawingArea progress_bar;
@@ -11,7 +12,6 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.HeaderBar header_bar;
     [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.ListBox listbox;
-    private TaskManager task_manager;
         
 
     public MainWindow(Gtk.Application application) {
@@ -28,12 +28,15 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         });
 
         mpv = new MpvController (video_area);
+        
+        // Time updated
+        mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());
 
-        mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());          // Time updated
+        // New file loaded
         mpv.notify["duration"].connect (() => {
             selected_item = task_manager.add_item (0, mpv.duration);
             update_progressbar ();
-        });  // New file loaded
+        });
 
         // Init menus
         var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
@@ -60,9 +63,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             },
             ActionEntry () {
                 name = "cut_video",
-                activate = () => {
-                    run_ffmpeg_cut.begin ();
-                }
+                activate = run_ffmpeg_cut
             }
         };
         add_action_entries (win_action_entries, this);
@@ -247,7 +248,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
             if (pos < selected_item.start_pos) {
                 selected_item.start_pos = 0;
-                start_pos_label.label = "00:00:00.000";
+                start_pos_label.label = Utils.time2str (0);
             }
 
             progress_bar.queue_draw ();
@@ -262,19 +263,32 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Cut!
-    private async void run_ffmpeg_cut () {
-        try {
-            yield task_manager.run_ffmpeg_cut ();
-        } catch (Error e) {
-            var msgdlg = new Gtk.MessageDialog (
-                this,
-                Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                Gtk.MessageType.ERROR,
-                Gtk.ButtonsType.CLOSE,
-                "Fails to cut: %s", e.message
-            );
-            msgdlg.run ();
-            msgdlg.destroy ();
-        }
+    private void run_ffmpeg_cut () {
+        task_manager.run_ffmpeg_cut.begin ((obj, res) => {
+            try {
+                task_manager.run_ffmpeg_cut.end (res);
+                var msgdlg = new Gtk.MessageDialog (
+                    this,
+                    Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    Gtk.MessageType.INFO,
+                    Gtk.ButtonsType.CLOSE,
+                    "Finished!"
+                );
+                msgdlg.run ();
+                msgdlg.destroy ();
+                task_manager.clear ();
+            }
+            catch (Error e) {
+                var msgdlg = new Gtk.MessageDialog (
+                    this,
+                    Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                    Gtk.MessageType.ERROR,
+                    Gtk.ButtonsType.CLOSE,
+                    "Fails to cut: %s", e.message
+                );
+                msgdlg.run ();
+                msgdlg.destroy ();
+            }
+        });
     }
 }
