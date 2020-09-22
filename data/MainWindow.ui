@@ -78,7 +78,7 @@
         <child>
           <object class="GtkButton" id="open_button">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
             <property name="receives_default">True</property>
             <property name="image">open_image</property>
             <property name="relief">half</property>
@@ -89,7 +89,7 @@
         <child>
           <object class="GtkMenuButton" id="cut_button">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can_focus">False</property>
             <property name="receives_default">True</property>
             <child>
               <object class="GtkImage" id="cut_image">
@@ -160,7 +160,7 @@
             <child>
               <object class="GtkButton" id="add_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Add segment</property>
                 <property name="image">add_image</property>
@@ -176,7 +176,7 @@
             <child>
               <object class="GtkButton" id="remove_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Remove selected segment</property>
                 <property name="image">remove_image</property>
@@ -192,7 +192,7 @@
             <child>
               <object class="GtkButton" id="clear_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Remove all segments</property>
                 <property name="image">clear_image</property>
@@ -235,7 +235,7 @@
             <child>
               <object class="GtkButton" id="jump_start_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Jump to start position</property>
                 <property name="image">jump_start_image</property>
@@ -251,7 +251,7 @@
             <child>
               <object class="GtkButton" id="set_start_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Set current position as start position</property>
                 <property name="image">set_start_image</property>
@@ -283,7 +283,7 @@
             <child>
               <object class="GtkButton" id="prev_frame_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Previous frame</property>
                 <property name="image">prev_frame_image</property>
@@ -300,7 +300,7 @@
             <child>
               <object class="GtkButton" id="pause_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Play / Pause</property>
                 <property name="image">play_image</property>
@@ -317,7 +317,7 @@
             <child>
               <object class="GtkButton" id="next_frame_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Next frame</property>
                 <property name="image">next_frame_image</property>
@@ -349,7 +349,7 @@
             <child>
               <object class="GtkButton" id="set_end_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Set current position as end position</property>
                 <property name="image">set_end_image</property>
@@ -366,7 +366,7 @@
             <child>
               <object class="GtkButton" id="jump_end_button">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Jump to end position</property>
                 <property name="image">jump_end_image</property>
