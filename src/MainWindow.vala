@@ -43,30 +43,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         var cut_menu_model = menu_builder.get_object ("cut-menu") as Menu;
         cut_button.set_menu_model (cut_menu_model);
 
-        ActionEntry win_action_entries[] = {
-            ActionEntry () {
-                name = "cut_mode",
-                parameter_type = "s",
-                state = "'seperate'",
-                change_state = (action, state) => action.set_state (state)
-            },
-            ActionEntry () {
-                name = "frame_mode",
-                parameter_type = "s",
-                state = "'keyframe'",
-                change_state = (action, state) => action.set_state (state)
-            },
-            ActionEntry () {
-                name = "keep_audio",
-                state = "true",
-                change_state = (action, state) => action.set_state (state)
-            },
-            ActionEntry () {
-                name = "cut_video",
-                activate = run_ffmpeg_cut
-            }
-        };
-        add_action_entries (win_action_entries, this);
+        // Add actions
+        add_action (new PropertyAction ("merge", task_manager, "merge"));
+        add_action (new PropertyAction ("exact-cut", task_manager, "exact-cut"));
+        add_action (new PropertyAction ("keep-audio", task_manager, "keep-audio"));
+        var action = new SimpleAction ("cut-video", null);
+        action.activate.connect (run_ffmpeg_cut);
+        add_action (action);
     }
 
 

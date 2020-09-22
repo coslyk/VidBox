@@ -3,39 +3,23 @@
   <menu id="cut-menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">Seperate files</attribute>
-        <attribute name="action">win.cut_mode</attribute>
-        <attribute name="target">seperate</attribute>
+        <attribute name="label" translatable="yes">Merge after cutting</attribute>
+        <attribute name="action">win.merge</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Merge into one</attribute>
-        <attribute name="action">win.cut_mode</attribute>
-        <attribute name="target">merge</attribute>
+        <attribute name="label" translatable="yes">Exact cut</attribute>
+        <attribute name="action">win.exact-cut</attribute>
       </item>
-    </section>
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">Keyframe cut</attribute>
-        <attribute name="action">win.frame_mode</attribute>
-        <attribute name="target">keyframe</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Normal cut</attribute>
-        <attribute name="action">win.frame_mode</attribute>
-        <attribute name="target">normal</attribute>
-      </item>
-    </section>
-    <section>
       <item>
         <attribute name="label" translatable="yes">Keep audio</attribute>
-        <attribute name="action">win.keep_audio</attribute>
+        <attribute name="action">win.keep-audio</attribute>
       </item>
     </section>
     <section>
       <attribute name="display-hint">horizontal-buttons</attribute>
       <item>
         <attribute name="label" translatable="yes">Cut</attribute>
-        <attribute name="action">win.cut_video</attribute>
+        <attribute name="action">win.cut-video</attribute>
         <attribute name="verb-icon">edit-cut-symbolic</attribute>
       </item>
     </section>

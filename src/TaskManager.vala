@@ -1,6 +1,10 @@
 
 class VideoSplitter.TaskManager : Object, ListModel {
 
+    public bool exact_cut { get; set; default = false; }
+    public bool merge { get; set; default = false; }
+    public bool keep_audio { get; set; default = true; }
+
     private Array<TaskItem> items = new Array<TaskItem> ();
     private string filepath;
     private string format;
@@ -32,8 +36,10 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
     // Remove all items
     public void clear () {
-        items_changed (0, items.length, 0);
-        items = new Array<TaskItem> ();
+        if (items.length > 0) {
+            items_changed (0, items.length, 0);
+            items = new Array<TaskItem> ();
+        }
     }
 
 
@@ -41,7 +47,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     public async void run_ffmpeg_cut () throws Error {
         for (uint i = 0; i < items.length ; i++) {
             unowned TaskItem item = items.index (i);
-            yield Ffmpeg.cut (filepath, format, item.start_pos, item.end_pos, true, false);
+            yield Ffmpeg.cut (filepath, format, item.start_pos, item.end_pos, !exact_cut, keep_audio);
         }
     }
 
