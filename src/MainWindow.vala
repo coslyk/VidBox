@@ -239,6 +239,24 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
 
+    // Jump to start position
+    [GtkCallback] private void on_jump_start_button_clicked () {
+        if (selected_item != null) {
+            mpv.pause = true;
+            mpv.playback_time = selected_item.start_pos;
+        }
+    }
+
+
+    // Jump to end position
+    [GtkCallback] private void on_jump_end_button_clicked () {
+        if (selected_item != null) {
+            mpv.pause = true;
+            mpv.playback_time = selected_item.end_pos;
+        }
+    }
+
+
     // Play / Pause
     [GtkCallback] private void on_pause_button_clicked () {
         mpv.pause = !mpv.pause;

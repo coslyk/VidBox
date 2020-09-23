@@ -80,10 +80,12 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Open file</property>
             <property name="image">open_image</property>
             <property name="relief">half</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="on_open_button_clicked" swapped="no"/>
+            <accelerator key="o" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
           </object>
         </child>
         <child>
@@ -91,6 +93,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Cut</property>
             <child>
               <object class="GtkImage" id="cut_image">
                 <property name="visible">True</property>
@@ -241,6 +244,7 @@
                 <property name="image">jump_start_image</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_jump_start_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -307,6 +311,7 @@
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_pause_button_clicked" swapped="no"/>
+                <accelerator key="space" signal="clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -372,6 +377,7 @@
                 <property name="image">jump_end_image</property>
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_jump_end_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
