@@ -5,7 +5,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     public bool merge { get; set; default = false; }
     public bool keep_audio { get; set; default = true; }
 
-    private Array<TaskItem> items = new Array<TaskItem> ();
+    private GenericArray<TaskItem> items = new GenericArray<TaskItem> ();
     private string filepath;
     private string format;
 
@@ -21,7 +21,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     // Add item
     public TaskItem add_item (double start_pos, double end_pos) {
         var item = new TaskItem (start_pos, end_pos);
-        items.append_val (item);
+        items.add (item);
         items_changed (items.length - 1, 0, 1);
         return item;
     }
@@ -38,7 +38,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     public void clear () {
         if (items.length > 0) {
             items_changed (0, items.length, 0);
-            items = new Array<TaskItem> ();
+            items.remove_range (0, items.length);
         }
     }
 
@@ -46,7 +46,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     // Cut!
     public async void run_ffmpeg_cut () throws Error {
         for (uint i = 0; i < items.length ; i++) {
-            unowned TaskItem item = items.index (i);
+            unowned TaskItem item = items[i];
             yield Ffmpeg.cut (filepath, format, item.start_pos, item.end_pos, !exact_cut, keep_audio);
         }
     }
@@ -58,7 +58,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
     }
 
     public Object? get_item (uint position) {
-        return position < items.length ? items.index (position) : null;
+        return position < items.length ? items[position] : null;
     }
 
     public uint get_n_items () {

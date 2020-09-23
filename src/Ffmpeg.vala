@@ -42,55 +42,61 @@ namespace VideoSplitter.Ffmpeg {
     public async void cut (string filepath, string format, double start_pos, double end_pos,
                            bool keyframe_cut, bool keep_audio) throws Error {
 
+        SourceFunc callback = cut.callback;
         string start_pos_str = Utils.time2str (start_pos);
         string end_pos_str = Utils.time2str (end_pos);
         string duration_str = Utils.time2str (end_pos - start_pos);
         string outfile = @"$(filepath)_$(start_pos_str)-$(end_pos_str).$(format)".replace (":", ".");
 
-        (unowned string)[] args = { "ffmpeg", "-hide_banner", "-loglevel", "warning" };
+        var args = new GenericArray<unowned string?> ();
+        args.add ("ffmpeg");
+        args.add ("-hide_banner");
+        args.add ("-loglevel");
+        args.add ("warning");
 
         // Cut position parameters
         if (keyframe_cut) {
-            args += "-ss";
-            args += start_pos_str;
-            args += "-i";
-            args += filepath;
-            args += "-t";
-            args += duration_str;
-            args += "-avoid_negative_ts";
-            args += "make_zero";
+            args.add ("-ss");
+            args.add (start_pos_str);
+            args.add ("-i");
+            args.add (filepath);
+            args.add ("-t");
+            args.add (duration_str);
+            args.add ("-avoid_negative_ts");
+            args.add ("make_zero");
         } else {
-            args += "-i";
-            args += filepath;
-            args += "-ss";
-            args += start_pos_str;
-            args += "-t";
-            args += duration_str;
+            args.add ("-i");
+            args.add (filepath);
+            args.add ("-ss");
+            args.add (start_pos_str);
+            args.add ("-t");
+            args.add (duration_str);
         }
 
         // No re-encoding
-        args += "-c";
-        args += "copy";
-        args += "-ignore_unknown";
+        args.add ("-c");
+        args.add ("copy");
+        args.add ("-ignore_unknown");
 
         // Enable experimental operation
-        args += "-strict";
-        args += "experimental";
+        args.add ("-strict");
+        args.add ("experimental");
 
         // Output format
-        args += "-f";
-        args += format;
+        args.add ("-f");
+        args.add (format);
 
         // Output file
-        args += "-y";
-        args += outfile;
+        args.add ("-y");
+        args.add (outfile);
+        args.add (null);
 
         // Run ffmpeg
         Pid child_pid;
         int standard_error;
         int[] exit_status = new int[1];
         Process.spawn_async_with_pipes (null,
-            args,
+            args.data,
             null,
             SpawnFlags.SEARCH_PATH | SpawnFlags.DO_NOT_REAP_CHILD,
             null,
@@ -102,7 +108,7 @@ namespace VideoSplitter.Ffmpeg {
 
         ChildWatch.add (child_pid, (pid, status) => {
             exit_status[0] = status;
-            Idle.add (cut.callback);
+            Idle.add ((owned) callback);
         });
         yield;
 
