@@ -13,6 +13,12 @@ namespace VideoSplitter {
         }
         
         protected override void activate () {
+            // Set menu
+            var menu = new Menu ();
+            menu.append ("About", "app.about");
+            menu.append ("Quit", "app.quit");
+            this.app_menu = menu;
+
             this.main_window = new MainWindow (this);
             this.main_window.show ();
         }

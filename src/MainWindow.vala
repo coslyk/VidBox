@@ -38,6 +38,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             update_progressbar ();
         });
 
+        // Logo
+        try {
+            this.icon = new Gdk.Pixbuf.from_resource ("/com/github/coslyk/VideoSplitter/logo.png");
+        } catch (Error e) {
+            warning ("%s", e.message);
+        }
+
         // Init menus
         var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
         var cut_menu_model = menu_builder.get_object ("cut-menu") as Menu;

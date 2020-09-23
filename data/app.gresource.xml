@@ -3,5 +3,6 @@
   <gresource prefix="/com/github/coslyk/VideoSplitter">
     <file>MainWindow.ui</file>
     <file>Menus.ui</file>
+    <file alias="logo.png">com.github.coslyk.VideoSplitter.png</file>
   </gresource>
 </gresources>
