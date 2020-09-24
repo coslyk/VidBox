@@ -8,34 +8,22 @@ add_project_arguments(['--vapidir', join_paths(meson.source_root(), 'vapi')], la
 
 # Compile resource files
 gnome = import('gnome')
-asresources = gnome.compile_resources(
-    'as-resources', join_paths('data', 'app.gresource.xml'),
-    source_dir: 'data',
-    c_name: 'as'
+videosplitter_gresources = gnome.compile_resources(
+    'videosplitter_gresources', join_paths('data', 'com.github.coslyk.VideoSplitter.gresource.xml'),
+    source_dir: 'data'
 )
-add_project_arguments(['--gresourcesdir', join_paths(meson.source_root(), 'data')], language: 'vala')
 
+# Dependencies
+videosplitter_deps = [
+    dependency('epoxy'),
+    dependency('gdk-wayland-3.0'),
+    dependency('gdk-x11-3.0'),
+    dependency('gio-2.0'),
+    dependency('gtk+-3.0'),
+    dependency('json-glib-1.0'),
+    dependency('mpv'),
+    meson.get_compiler('c').find_library('m', required : true)
+]
 
-# Create a new executable
-executable(
-    meson.project_name(),
-    'src/Application.vala',
-    'src/Ffmpeg.vala',
-    'src/MainWindow.vala',
-    'src/MpvController.vala',
-    'src/TaskItem.vala',
-    'src/TaskManager.vala',
-    'src/Utils.vala',
-    asresources,
-    dependencies: [
-        dependency('epoxy'),
-        dependency('gdk-wayland-3.0'),
-        dependency('gdk-x11-3.0'),
-        dependency('gio-2.0'),
-        dependency('gtk+-3.0'),
-        dependency('json-glib-1.0'),
-        dependency('mpv'),
-        meson.get_compiler('c').find_library('m', required : true)
-    ],
-    install: true
-)
+subdir('data')
+subdir('src')

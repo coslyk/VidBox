@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=VideoSplitter
+Comment=A simple tool to split videos
+Categories=Utility;
+Exec=com.github.coslyk.VideoSplitter
+Icon=com.github.coslyk.VideoSplitter
+StartupWMClass=com.github.coslyk.VideoSplitter
+Terminal=false
+Type=Application
