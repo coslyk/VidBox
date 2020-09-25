@@ -45,12 +45,27 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
     // Cut!
     public async void run_ffmpeg_cut () throws Error {
-        for (uint i = 0; i < items.length ; i++) {
-            unowned TaskItem item = items[i];
+
+        // Cut
+        var outfiles = new GenericArray<string> (items.length);
+        foreach (unowned TaskItem item in items.data) {
             string start_pos_str = Utils.time2str (item.start_pos);
             string end_pos_str = Utils.time2str (item.end_pos);
             string outfile = @"$(filepath)_$(start_pos_str)-$(end_pos_str).$(format)".replace (":", ".");
             yield Ffmpeg.cut (filepath, outfile, format, item.start_pos, item.end_pos, !exact_cut, keep_audio);
+            outfiles.add ((owned) outfile);
+        }
+
+        // Merge after cut
+        if (merge) {
+            string merged_file = @"$(filepath)_cut_merge.$(format)";
+            yield Ffmpeg.merge (outfiles.data, merged_file, format);
+
+            // Remove cut files
+            foreach (unowned string outfile in outfiles.data) {
+                var file = File.new_for_path (outfile);
+                yield file.delete_async ();
+            }
         }
     }
 
