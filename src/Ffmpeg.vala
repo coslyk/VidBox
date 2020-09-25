@@ -39,14 +39,12 @@ namespace VideoSplitter.Ffmpeg {
     }
 
 
-    public async void cut (string filepath, string format, double start_pos, double end_pos,
+    public async void cut (string infile, string outfile, string format, double start_pos, double end_pos,
                            bool keyframe_cut, bool keep_audio) throws Error {
 
         SourceFunc callback = cut.callback;
         string start_pos_str = Utils.time2str (start_pos);
-        string end_pos_str = Utils.time2str (end_pos);
         string duration_str = Utils.time2str (end_pos - start_pos);
-        string outfile = @"$(filepath)_$(start_pos_str)-$(end_pos_str).$(format)".replace (":", ".");
 
         var args = new GenericArray<unowned string?> ();
         args.add ("ffmpeg");
@@ -59,14 +57,14 @@ namespace VideoSplitter.Ffmpeg {
             args.add ("-ss");
             args.add (start_pos_str);
             args.add ("-i");
-            args.add (filepath);
+            args.add (infile);
             args.add ("-t");
             args.add (duration_str);
             args.add ("-avoid_negative_ts");
             args.add ("make_zero");
         } else {
             args.add ("-i");
-            args.add (filepath);
+            args.add (infile);
             args.add ("-ss");
             args.add (start_pos_str);
             args.add ("-t");

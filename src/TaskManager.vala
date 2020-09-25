@@ -47,7 +47,10 @@ class VideoSplitter.TaskManager : Object, ListModel {
     public async void run_ffmpeg_cut () throws Error {
         for (uint i = 0; i < items.length ; i++) {
             unowned TaskItem item = items[i];
-            yield Ffmpeg.cut (filepath, format, item.start_pos, item.end_pos, !exact_cut, keep_audio);
+            string start_pos_str = Utils.time2str (item.start_pos);
+            string end_pos_str = Utils.time2str (item.end_pos);
+            string outfile = @"$(filepath)_$(start_pos_str)-$(end_pos_str).$(format)".replace (":", ".");
+            yield Ffmpeg.cut (filepath, outfile, format, item.start_pos, item.end_pos, !exact_cut, keep_audio);
         }
     }
 
