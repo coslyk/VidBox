@@ -1,7 +1,7 @@
 [CCode (cheader_filename = "mpv/client.h,mpv/render.h,mpv/render_gl.h")]
 namespace Mpv {
 
-    [CCode (cname = "enum mpv_error", cprefix = "MPV_ERROR_")]
+    [CCode (cname = "enum mpv_error", has_type_id = false, cprefix = "MPV_ERROR_")]
     public enum Error {
 
         SUCCESS,              // No error happened
@@ -98,6 +98,7 @@ namespace Mpv {
         public void* data;
     }
 
+    [Compact]
     [CCode (cname = "struct mpv_event_log_message")]
     public class EventLogMessage {
 
@@ -106,6 +107,7 @@ namespace Mpv {
         public string text;
     }
 
+    [Compact]
     [CCode (cname = "struct mpv_event_end_file")]
     public class EventEndFile {
 
