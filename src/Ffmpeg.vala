@@ -41,7 +41,7 @@ namespace VideoSplitter.Ffmpeg {
 
     // Cut videos
     public async void cut (string infile, string outfile, string format, double start_pos, double end_pos,
-                           bool keyframe_cut, bool keep_audio) throws Error {
+                           bool keyframe_cut, bool remove_audio) throws Error {
 
         SourceFunc callback = cut.callback;
         string start_pos_str = Utils.time2str (start_pos);
@@ -75,6 +75,12 @@ namespace VideoSplitter.Ffmpeg {
         // No re-encoding
         args.add ("-c");
         args.add ("copy");
+
+        // Remove audio
+        if (remove_audio) {
+            args.add ("-an");
+        }
+        
         args.add ("-ignore_unknown");
 
         // Enable experimental operation

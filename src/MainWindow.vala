@@ -53,7 +53,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         // Add actions
         add_action (new PropertyAction ("merge", task_manager, "merge"));
         add_action (new PropertyAction ("exact-cut", task_manager, "exact-cut"));
-        add_action (new PropertyAction ("keep-audio", task_manager, "keep-audio"));
+        add_action (new PropertyAction ("remove-audio", task_manager, "remove-audio"));
         var action = new SimpleAction ("cut-video", null);
         action.activate.connect (run_ffmpeg_cut);
         add_action (action);

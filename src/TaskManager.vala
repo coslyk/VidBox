@@ -3,7 +3,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
     public bool exact_cut { get; set; default = false; }
     public bool merge { get; set; default = false; }
-    public bool keep_audio { get; set; default = true; }
+    public bool remove_audio { get; set; default = false; }
 
     private GenericArray<TaskItem> items = new GenericArray<TaskItem> ();
     private string filepath;
@@ -52,7 +52,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
             string start_pos_str = Utils.time2str (item.start_pos);
             string end_pos_str = Utils.time2str (item.end_pos);
             string outfile = @"$(filepath)_$(start_pos_str)-$(end_pos_str).$(format)".replace (":", ".");
-            yield Ffmpeg.cut (filepath, outfile, format, item.start_pos, item.end_pos, !exact_cut, keep_audio);
+            yield Ffmpeg.cut (filepath, outfile, format, item.start_pos, item.end_pos, !exact_cut, remove_audio);
             outfiles.add ((owned) outfile);
         }
 
