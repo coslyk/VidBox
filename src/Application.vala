@@ -18,6 +18,7 @@ namespace VideoSplitter {
 
             // Set menu
             var menu = new Menu ();
+            menu.append ("Preference", "app.preference");
             menu.append ("About", "app.about");
             menu.append ("Quit", "app.quit");
             this.app_menu = menu;
@@ -27,6 +28,13 @@ namespace VideoSplitter {
             action.activate.connect (() => {
                 var about_dialog = new AboutDialog (main_window);
                 about_dialog.present ();
+            });
+            add_action (action);
+
+            action = new SimpleAction ("preference", null);
+            action.activate.connect (() => {
+                var dialog = new PreferenceDialog (main_window);
+                dialog.present ();
             });
             add_action (action);
 

@@ -7,6 +7,7 @@ executable(
     'Ffmpeg.vala',
     'MainWindow.vala',
     'MpvController.vala',
+    'PreferenceDialog.vala',
     'TaskItem.vala',
     'TaskManager.vala',
     'Utils.vala',
