@@ -46,19 +46,28 @@ class VideoSplitter.TaskManager : Object, ListModel {
     // Cut!
     public async void run_ffmpeg_cut () throws Error {
 
+        // Where to store output files?
+        var settings = Application.settings;
+        string outfile_base;
+        if (settings.get_boolean ("use-input-directory")) {
+            outfile_base = filepath;
+        } else {
+            outfile_base = Path.build_filename (settings.get_string ("output-directory"), Path.get_basename (filepath));
+        }
+
         // Cut
         var outfiles = new GenericArray<string> (items.length);
         foreach (unowned TaskItem item in items.data) {
-            string start_pos_str = Utils.time2str (item.start_pos);
-            string end_pos_str = Utils.time2str (item.end_pos);
-            string outfile = @"$(filepath)_$(start_pos_str)-$(end_pos_str).$(format)".replace (":", ".");
+            string start_pos_str = Utils.time2str (item.start_pos).replace (":", ".");
+            string end_pos_str = Utils.time2str (item.end_pos).replace (":", ".");
+            string outfile = @"$(outfile_base)_$(start_pos_str)-$(end_pos_str).$(format)";
             yield Ffmpeg.cut (filepath, outfile, format, item.start_pos, item.end_pos, !exact_cut, remove_audio);
             outfiles.add ((owned) outfile);
         }
 
         // Merge after cut
         if (merge) {
-            string merged_file = @"$(filepath)_cut_merge.$(format)";
+            string merged_file = @"$(outfile_base)_cut_merge.$(format)";
             yield Ffmpeg.merge (outfiles.data, merged_file, format);
 
             // Remove cut files
