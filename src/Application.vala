@@ -18,6 +18,8 @@ namespace VideoSplitter {
         protected override void activate () {
 
             settings = new Settings ("com.github.coslyk.VideoSplitter");
+            settings.bind ("dark-mode", Gtk.Settings.get_default (), "gtk-application-prefer-dark-theme", SettingsBindFlags.GET);
+            
             this.main_window = new MainWindow (this);
 
             // Set menu
