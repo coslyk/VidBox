@@ -2,6 +2,9 @@
 namespace VideoSplitter {
     public class Application : Gtk.Application {
 
+        // Settings
+        public static Settings settings;
+
         // Main Window
         private MainWindow main_window;
 
@@ -14,6 +17,7 @@ namespace VideoSplitter {
         
         protected override void activate () {
 
+            settings = new Settings ("com.github.coslyk.VideoSplitter");
             this.main_window = new MainWindow (this);
 
             // Set menu

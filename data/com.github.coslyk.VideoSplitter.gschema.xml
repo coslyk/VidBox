@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema path="/com/github/coslyk/VideoSplitter/" id="com.github.coslyk.VideoSplitter">
+    <key name="dark-mode" type="b">
+      <default>true</default>
+      <summary>Use dark mode</summary>
+    </key>
+
+    <key name="use-input-directory" type="b">
+      <default>true</default>
+      <summary>Use the same directory as inputs for outputs.</summary>
+    </key>
+    
+    <key name="output-directory" type="s">
+      <default>''</default>
+      <summary>Output directory</summary>
+    </key>
+  </schema>
+</schemalist>

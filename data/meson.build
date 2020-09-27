@@ -16,3 +16,9 @@ install_data(
     'com.github.coslyk.VideoSplitter.appdata.xml',
     install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
+
+# Install GSettings schema
+install_data (
+    'com.github.coslyk.VideoSplitter.gschema.xml',
+    install_dir: join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
+)
