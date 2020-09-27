@@ -12,6 +12,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.HeaderBar header_bar;
     [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.ListBox listbox;
+    [GtkChild] private Gtk.Spinner running_spinner;
         
 
     public MainWindow(Gtk.Application application) {
@@ -272,7 +273,15 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Cut!
     private void run_ffmpeg_cut () {
+
+        cut_button.sensitive = false;
+        running_spinner.start ();
+
         task_manager.run_ffmpeg_cut.begin ((obj, res) => {
+
+            running_spinner.stop ();
+            cut_button.sensitive = true;
+            
             try {
                 task_manager.run_ffmpeg_cut.end (res);
                 var msgdlg = new Gtk.MessageDialog (
