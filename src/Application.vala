@@ -54,15 +54,5 @@ namespace VideoSplitter {
 
             this.main_window.show ();
         }
-        
-        public static int main (string[] args) {
-
-            // Needed by mpv
-            Environment.set_variable ("LC_NUMERIC", "C", true);
-            Intl.setlocale (LocaleCategory.NUMERIC, "C");
-
-            var app = new Application ();
-            return app.run (args);
-        }
     }
 }

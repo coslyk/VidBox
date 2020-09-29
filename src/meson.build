@@ -11,6 +11,7 @@ executable(
     'TaskItem.vala',
     'TaskManager.vala',
     'Utils.vala',
+    'main.vala',
     videosplitter_gresources,
     dependencies: videosplitter_deps,
     install: true
