@@ -1,0 +1,20 @@
+app: VideoSplitter
+
+ingredients:
+  dist: xenial
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse
+  ppas:
+    - cos-lyk/libmpv-xenial
+  packages:
+    - libjson-glib-1.0-0
+    - libmpv1
+  script:
+    - echo "${TRAVIS_TAG#v}" > VERSION
+
+script:
+  - cp -rf ../../build/usr/* usr/
+  - cp usr/share/icons/*.png .
+  - cp usr/share/applications/*.desktop .
+  - rm -rf usr/share/man
+
