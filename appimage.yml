@@ -7,8 +7,8 @@ ingredients:
   ppas:
     - cos-lyk/libmpv-xenial
   packages:
-    - libjson-glib-1.0-0
     - libmpv1
+    - libjson-glib-1.0-0
   script:
     - echo "${TRAVIS_TAG#v}" > VERSION
 
