@@ -56,7 +56,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
         }
 
         // Cut
-        var outfiles = new GenericArray<string> (items.length);
+        var outfiles = new GenericArray<string> ();
         foreach (unowned TaskItem item in items.data) {
             string start_pos_str = Utils.time2str (item.start_pos).replace (":", ".");
             string end_pos_str = Utils.time2str (item.end_pos).replace (":", ".");
