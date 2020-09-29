@@ -25,6 +25,7 @@ videosplitter_deps = [
     dependency('gdk-wayland-3.0'),
     dependency('gdk-x11-3.0'),
     dependency('gio-2.0'),
+    dependency('glib-2.0', version: '>=2.38'),
     dependency('gtk+-3.0'),
     dependency('json-glib-1.0'),
     dependency('mpv'),
