@@ -11,6 +11,6 @@ class VideoSplitter.TaskItem : Object {
     }
 
     public string create_description () {
-        return "%s - %s\nDuration: %s".printf (time2str (start_pos), time2str (end_pos), time2str (end_pos - start_pos));
+        return _("%s - %s\nDuration: %s").printf (time2str (start_pos), time2str (end_pos), time2str (end_pos - start_pos));
     }
 }

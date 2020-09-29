@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=VideoSplitter
+Name=Video Splitter
 Comment=A simple tool to split videos
 Categories=Utility;
 Exec=com.github.coslyk.VideoSplitter

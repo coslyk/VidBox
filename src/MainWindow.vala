@@ -133,7 +133,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
                 Gtk.DialogFlags.DESTROY_WITH_PARENT,
                 Gtk.MessageType.ERROR,
                 Gtk.ButtonsType.CLOSE,
-                "Error parsing file: %s", e.message
+                _("Error parsing file: %s"), e.message
             );
             msgdlg.run ();
             msgdlg.destroy ();
@@ -144,9 +144,9 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
         // Show dialog
         var dialog = new Gtk.FileChooserDialog (
-            "Open file", this, Gtk.FileChooserAction.OPEN,
-            "Cancel", Gtk.ResponseType.CANCEL,
-            "Open", Gtk.ResponseType.ACCEPT
+            _("Open file"), this, Gtk.FileChooserAction.OPEN,
+            _("Cancel"), Gtk.ResponseType.CANCEL,
+            _("Open"), Gtk.ResponseType.ACCEPT
         );
         var result = dialog.run ();
 
@@ -312,7 +312,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
                     Gtk.MessageType.INFO,
                     Gtk.ButtonsType.CLOSE,
-                    "Finished!"
+                    _("Finished!")
                 );
                 msgdlg.run ();
                 msgdlg.destroy ();
@@ -324,7 +324,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
                     Gtk.MessageType.ERROR,
                     Gtk.ButtonsType.CLOSE,
-                    "Fails to cut: %s", e.message
+                    _("Fails to cut: %s"), e.message
                 );
                 msgdlg.run ();
                 msgdlg.destroy ();

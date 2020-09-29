@@ -1,8 +1,21 @@
 
-# Install .desktop file
-install_data(
-    'com.github.coslyk.VideoSplitter.desktop',
+#Translate and install .desktop file
+i18n.merge_file(
+    input: meson.project_name() + '.desktop.in',
+    output: meson.project_name() + '.desktop',
+    po_dir: join_paths(meson.source_root(), 'po'),
+    type: 'desktop',
+    install: true,
     install_dir: join_paths(get_option('datadir'), 'applications')
+)
+
+#Translate and install our .appdata file
+i18n.merge_file(
+    input: meson.project_name() + '.appdata.xml.in',
+    output: meson.project_name() + '.appdata.xml',
+    po_dir: join_paths(meson.source_root(), 'po'),
+    install: true,
+    install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
 # Install logo
@@ -11,14 +24,8 @@ install_data(
     install_dir: join_paths(get_option('datadir'), 'icons')
 )
 
-# Install .appdata.xml file
-install_data(
-    'com.github.coslyk.VideoSplitter.appdata.xml',
-    install_dir: join_paths(get_option('datadir'), 'metainfo')
-)
-
 # Install GSettings schema
-install_data (
+install_data(
     'com.github.coslyk.VideoSplitter.gschema.xml',
-    install_dir: join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
+    install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )

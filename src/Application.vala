@@ -28,9 +28,9 @@ namespace VideoSplitter {
 
             // Set menu
             var menu = new Menu ();
-            menu.append ("Preference", "app.preference");
-            menu.append ("About", "app.about");
-            menu.append ("Quit", "app.quit");
+            menu.append (_("Preference"), "app.preference");
+            menu.append (_("About"), "app.about");
+            menu.append (_("Quit"), "app.quit");
             this.app_menu = menu;
 
             // Add actions

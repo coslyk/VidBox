@@ -1,0 +1,174 @@
+# Malagasy translations for com.github.coslyk.VideoSplitter package.
+# Copyright (C) 2020 THE com.github.coslyk.VideoSplitter'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.coslyk.VideoSplitter package.
+# Automatically generated, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.coslyk.VideoSplitter\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-29 16:58+0200\n"
+"PO-Revision-Date: 2020-09-29 16:44+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: mg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/AboutDialog.vala:12 data/com.github.coslyk.VideoSplitter.desktop.in:4
+#: data/com.github.coslyk.VideoSplitter.appdata.xml.in:8
+msgid "A simple tool to split videos"
+msgstr ""
+
+#: src/AboutDialog.vala:14
+msgid "Homepage"
+msgstr ""
+
+#. Set menu
+#: src/Application.vala:31 data/PreferenceDialog.ui:7
+msgid "Preference"
+msgstr ""
+
+#: src/Application.vala:32
+msgid "About"
+msgstr ""
+
+#: src/Application.vala:33
+msgid "Quit"
+msgstr ""
+
+#: src/MainWindow.vala:136
+#, c-format
+msgid "Error parsing file: %s"
+msgstr ""
+
+#. Show dialog
+#: src/MainWindow.vala:147 data/MainWindow.ui:84
+msgid "Open file"
+msgstr ""
+
+#: src/MainWindow.vala:148
+msgid "Cancel"
+msgstr ""
+
+#: src/MainWindow.vala:149
+msgid "Open"
+msgstr ""
+
+#: src/MainWindow.vala:315
+msgid "Finished!"
+msgstr ""
+
+#: src/MainWindow.vala:327
+#, c-format
+msgid "Fails to cut: %s"
+msgstr ""
+
+#: src/TaskItem.vala:14
+#, c-format
+msgid ""
+"%s - %s\n"
+"Duration: %s"
+msgstr ""
+
+#: data/MainWindow.ui:97 data/Menus.ui:21
+msgid "Cut"
+msgstr ""
+
+#: data/MainWindow.ui:152
+msgid "Segments to export:"
+msgstr ""
+
+#: data/MainWindow.ui:179
+msgid "Add segment"
+msgstr ""
+
+#: data/MainWindow.ui:195
+msgid "Remove selected segment"
+msgstr ""
+
+#: data/MainWindow.ui:211
+msgid "Remove all segments"
+msgstr ""
+
+#: data/MainWindow.ui:254
+msgid "Jump to start position"
+msgstr ""
+
+#: data/MainWindow.ui:271
+msgid "Set current position as start position"
+msgstr ""
+
+#: data/MainWindow.ui:287
+msgid "Start position"
+msgstr ""
+
+#: data/MainWindow.ui:303
+msgid "Previous frame"
+msgstr ""
+
+#: data/MainWindow.ui:320
+msgid "Play / Pause"
+msgstr ""
+
+#: data/MainWindow.ui:338
+msgid "Next frame"
+msgstr ""
+
+#: data/MainWindow.ui:354
+msgid "End position"
+msgstr ""
+
+#: data/MainWindow.ui:370
+msgid "Set current position as end position"
+msgstr ""
+
+#: data/MainWindow.ui:387
+msgid "Jump to end position"
+msgstr ""
+
+#: data/Menus.ui:6
+msgid "Merge after cutting"
+msgstr ""
+
+#: data/Menus.ui:10
+msgid "Exact cut"
+msgstr ""
+
+#: data/Menus.ui:14
+msgid "Remove audio"
+msgstr ""
+
+#: data/PreferenceDialog.ui:39
+msgid "Appearance"
+msgstr ""
+
+#: data/PreferenceDialog.ui:53
+msgid "Dark mode"
+msgstr ""
+
+#: data/PreferenceDialog.ui:70
+msgid "Output directory"
+msgstr ""
+
+#: data/PreferenceDialog.ui:84
+msgid "Use the same directory as the input files"
+msgstr ""
+
+#: data/PreferenceDialog.ui:102
+msgid "Choose output path"
+msgstr ""
+
+#: data/com.github.coslyk.VideoSplitter.desktop.in:3
+#: data/com.github.coslyk.VideoSplitter.appdata.xml.in:7
+msgid "Video Splitter"
+msgstr ""
+
+#: data/com.github.coslyk.VideoSplitter.desktop.in:7
+msgid "com.github.coslyk.VideoSplitter"
+msgstr ""
+
+#: data/com.github.coslyk.VideoSplitter.appdata.xml.in:10
+msgid "Split your videos losslessly and conveniently."
+msgstr ""

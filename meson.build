@@ -13,6 +13,12 @@ videosplitter_gresources = gnome.compile_resources(
     source_dir: 'data'
 )
 
+
+# Translations
+i18n = import('i18n')
+add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
+
+
 # Dependencies
 videosplitter_deps = [
     dependency('epoxy'),
@@ -25,7 +31,8 @@ videosplitter_deps = [
     meson.get_compiler('c').find_library('m', required : true)
 ]
 
-meson.add_install_script('meson/post_install.py')
-
 subdir('data')
 subdir('src')
+subdir('po')
+
+meson.add_install_script('meson/post_install.py')
