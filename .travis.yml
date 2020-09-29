@@ -15,13 +15,11 @@ script:
   - meson build --prefix=/usr --buildtype=release
   - ninja -C build
 
-before_deploy:
-  - curl -Lo pkg2appimage 'https://raw.githubusercontent.com/AppImage/pkg2appimage/master/pkg2appimage'
-  - chmod +x pkg2appimage
-  - DESTDIR=. ninja -C build install
-  - ./pkg2appimage appimage.yml
-
 after_success:
+  - DESTDIR=. ninja -C build install
+  - wget -c https://raw.githubusercontent.com/AppImage/pkg2appimage/master/pkg2appimage
+  - chmod +x pkg2appimage
+  - ./pkg2appimage appimage.yml
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh out/*
 
