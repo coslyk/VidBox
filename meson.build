@@ -1,6 +1,10 @@
 # Project info
 project('com.github.coslyk.VideoSplitter', 'vala', 'c', version: '0.1')
 
+conf_data = configuration_data()
+conf_data.set('APP_ID', meson.project_name())
+conf_data.set('VERSION', meson.project_version())
+
 
 # Import vapi
 add_project_arguments(['--vapidir', join_paths(meson.source_root(), 'vapi')], language: 'vala')
@@ -9,7 +13,7 @@ add_project_arguments(['--vapidir', join_paths(meson.source_root(), 'vapi')], la
 # Compile resource files
 gnome = import('gnome')
 videosplitter_gresources = gnome.compile_resources(
-    'videosplitter_gresources', join_paths('data', 'com.github.coslyk.VideoSplitter.gresource.xml'),
+    'videosplitter_gresources', join_paths('data', meson.project_name() + '.gresource.xml'),
     source_dir: 'data'
 )
 

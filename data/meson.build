@@ -20,12 +20,12 @@ i18n.merge_file(
 
 # Install logo
 install_data(
-    'com.github.coslyk.VideoSplitter.png',
+    meson.project_name() + '.png',
     install_dir: join_paths(get_option('datadir'), 'icons')
 )
 
 # Install GSettings schema
 install_data(
-    'com.github.coslyk.VideoSplitter.gschema.xml',
+    meson.project_name() + '.gschema.xml',
     install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )

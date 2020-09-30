@@ -10,7 +10,7 @@ namespace VideoSplitter {
 
         public Application () {
             Object (
-                application_id: "com.github.coslyk.VideoSplitter",
+                application_id: Build.APP_ID,
                 flags: ApplicationFlags.FLAGS_NONE
             );
         }
@@ -18,7 +18,7 @@ namespace VideoSplitter {
         protected override void activate () {
 
             // Init settings
-            settings = new Settings ("com.github.coslyk.VideoSplitter");
+            settings = new Settings (Build.APP_ID);
             settings.bind ("dark-mode", Gtk.Settings.get_default (), "gtk-application-prefer-dark-theme", SettingsBindFlags.GET);
             if (settings.get_string ("output-directory") == "") {
                 settings.set_string ("output-directory", Environment.get_home_dir ());

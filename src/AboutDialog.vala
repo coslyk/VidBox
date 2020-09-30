@@ -8,7 +8,7 @@ class VideoSplitter.AboutDialog : Gtk.AboutDialog {
             modal: true,
             destroy_with_parent: true,
             program_name: "Video Splitter",
-            version: "0.1",
+            version: Build.VERSION,
             comments: _("A simple tool to split videos"),
             website: "https://coslyk.github.io/videosplitter.html",
             website_label: _("Homepage"),

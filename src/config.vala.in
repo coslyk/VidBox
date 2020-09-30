@@ -1,0 +1,4 @@
+namespace Build {
+    public const string APP_ID = "@APP_ID@";
+    public const string VERSION = "@VERSION@";
+}

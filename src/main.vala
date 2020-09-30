@@ -5,11 +5,11 @@ namespace VideoSplitter {
 
         // Fix i18n in AppImage
         unowned string program_path = Utils.get_program_path ();
-        if (program_path.has_suffix ("/bin/com.github.coslyk.VideoSplitter")) {
-            string dirname = program_path.replace ("/bin/com.github.coslyk.VideoSplitter", "/share/locale");
-            Intl.bindtextdomain ("com.github.coslyk.VideoSplitter", dirname);
+        if (program_path.has_suffix ("/bin/" + Build.APP_ID)) {
+            string dirname = program_path.replace ("/bin/" + Build.APP_ID, "/share/locale");
+            Intl.bindtextdomain (Build.APP_ID, dirname);
         }
-        Intl.textdomain ("com.github.coslyk.VideoSplitter");
+        Intl.textdomain (Build.APP_ID);
 
         // Needed by mpv
         Environment.set_variable ("LC_NUMERIC", "C", true);
