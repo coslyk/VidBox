@@ -20,9 +20,9 @@ after_success:
   - DESTDIR=$PWD/AppDir ninja -C build install
   - wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
   - chmod +x linuxdeploy*.AppImage
-  - ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+  - ./linuxdeploy-x86_64.AppImage --plugin gtk3 --appdir AppDir --output appimage
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh *.AppImage
+  - bash upload.sh Video_Splitter-*.AppImage
 
 branches:
   except:
