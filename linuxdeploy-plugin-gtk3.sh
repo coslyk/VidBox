@@ -3,11 +3,6 @@
 # abort on all errors
 set -e
 
-if [ "$DEBUG" != "" ]; then
-    set -x
-    verbose="--verbose"
-fi
-
 script=$(readlink -f "$0")
 
 show_usage() {
@@ -61,12 +56,12 @@ export GSETTINGS_SCHEMA_DIR="\$APPDIR/$glib_schemasdir"
 EOF
 
 echo "Excluding libraries"
-rm -f $APPDIR/usr/lib/libatk-1.0.so.0
-rm -f $APPDIR/usr/lib/libatk-bridge-2.0.so.0
-rm -f $APPDIR/usr/lib/libcairo.so.2
-rm -f $APPDIR/usr/lib/libcairo-gobject.so.2
-rm -f $APPDIR/usr/lib/libdbus-1.so.3
-rm -f $APPDIR/usr/lib/libepoxy.so.0
-rm -f $APPDIR/usr/lib/libgdk-3.so.0
-rm -f $APPDIR/usr/lib/libgmodule-2.0.so.0
-rm -f $APPDIR/usr/lib/libgtk-3.so.0
+rm -vf $APPDIR/usr/lib/libatk-1.0.so.0
+rm -vf $APPDIR/usr/lib/libatk-bridge-2.0.so.0
+rm -vf $APPDIR/usr/lib/libcairo.so.2
+rm -vf $APPDIR/usr/lib/libcairo-gobject.so.2
+rm -vf $APPDIR/usr/lib/libdbus-1.so.3
+rm -vf $APPDIR/usr/lib/libepoxy.so.0
+rm -vf $APPDIR/usr/lib/libgdk-3.so.0
+rm -vf $APPDIR/usr/lib/libgmodule-2.0.so.0
+rm -vf $APPDIR/usr/lib/libgtk-3.so.0
