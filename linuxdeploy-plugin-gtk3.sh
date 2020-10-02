@@ -46,13 +46,13 @@ mkdir -p "$APPDIR"
 
 
 echo "Compiling GLib schemas"
-glib_schemasdir="usr/share/glib-2.0/schemas"
-glib-compile-schemas "$APPDIR/$glib_schemasdir"
+glib-compile-schemas "$APPDIR/usr/share/glib-2.0/schemas"
 HOOKSDIR="$APPDIR/apprun-hooks"
 HOOKFILE="$HOOKSDIR/linuxdeploy-plugin-gtk3.sh"
 mkdir -p "$HOOKSDIR"
-cat > "$HOOKFILE" <<EOF
-export GSETTINGS_SCHEMA_DIR="\$APPDIR/$glib_schemasdir"
+cat > "$HOOKFILE" <<\EOF
+export APPDIR="${APPDIR:-"$(dirname "$(realpath "$0")")"}"
+export GSETTINGS_SCHEMA_DIR="$APPDIR/usr/share/glib-2.0/schemas"
 EOF
 
 echo "Excluding libraries"
