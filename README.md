@@ -14,7 +14,7 @@ Here is the development page of this project. For the program usage information,
 
 ### Compile
 
-Following packages are essential for compiling Bingle.
+Following packages are essential for compiling Video Splitter.
 
 On ArchLinux:
 
@@ -36,6 +36,11 @@ On Debian:
     - libgtk-3-dev
     - libjson-glib-dev
     - libmpv-dev
+```
+
+Additional runtime dependencies:
+```
+    - ffmpeg
 ```
 
 Other Linux: Please diy.
