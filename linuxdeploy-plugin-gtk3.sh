@@ -52,7 +52,9 @@ HOOKFILE="$HOOKSDIR/linuxdeploy-plugin-gtk3.sh"
 mkdir -p "$HOOKSDIR"
 cat > "$HOOKFILE" <<\EOF
 export APPDIR="${APPDIR:-"$(dirname "$(realpath "$0")")"}"
-export GSETTINGS_SCHEMA_DIR="$APPDIR/usr/share/glib-2.0/schemas"
+export PATH="${APPDIR}"/usr/bin/:"${PATH}"
+export LD_LIBRARY_PATH="${APPDIR}"/usr/lib/:"${LD_LIBRARY_PATH}"
+export GSETTINGS_SCHEMA_DIR="${APPDIR}/usr/share/glib-2.0/schemas"
 EOF
 
 echo "Excluding libraries"
