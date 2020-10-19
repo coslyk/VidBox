@@ -39,7 +39,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         listbox.bind_model (task_manager, (item) => {
             var task = ((TaskItem) item);
             var label = new Gtk.Label (task.create_description ());
-            task.notify.connect (() => label.label = task.create_description ());
+            task.notify.connect ((obj, param) => label.label = ((TaskItem) obj).create_description ());
             return label;
         });
 
