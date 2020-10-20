@@ -20,14 +20,16 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     private MpvController mpv;
     private TaskManager task_manager;
     private TaskItem? selected_item;
-    [GtkChild] private Gtk.GLArea video_area;
+    [GtkChild] private Gtk.Button back_button;
     [GtkChild] private Gtk.DrawingArea progress_bar;
+    [GtkChild] private Gtk.HeaderBar header_bar;
+    [GtkChild] private Gtk.GLArea video_area;
     [GtkChild] private Gtk.Label start_pos_label;
     [GtkChild] private Gtk.Label end_pos_label;
-    [GtkChild] private Gtk.HeaderBar header_bar;
-    [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.ListBox listbox;
+    [GtkChild] private Gtk.MenuButton cut_button;
     [GtkChild] private Gtk.Spinner running_spinner;
+    [GtkChild] private Gtk.Stack main_stack;
         
 
     public MainWindow(Gtk.Application application) {
@@ -73,12 +75,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         var action = new SimpleAction ("cut-video", null);
         action.activate.connect (run_ffmpeg_cut);
         add_action (action);
+    }
 
-        // Enable drag and drops
-        const Gtk.TargetEntry[] targets = {
-            {"text/uri-list", 0, 0}
-        };
-        Gtk.drag_dest_set (this, Gtk.DestDefaults.ALL, targets, Gdk.DragAction.COPY);
+    [GtkCallback] void on_back_button_clicked () {
+        main_stack.visible_child_name = "home_page";
+        back_button.visible = false;
+        cut_button.visible = false;
+        header_bar.subtitle = null;
     }
 
 
@@ -134,6 +137,11 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             // Get file info
             task_manager.new_file (filepath);
 
+            // Show splitter
+            main_stack.visible_child_name = "splitter_page";
+            back_button.visible = true;
+            cut_button.visible = true;
+
             // Open file
             mpv.open (filepath);
             string basename = Path.get_basename (filepath);
@@ -155,7 +163,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         }
     }
 
-    [GtkCallback] private void on_open_button_clicked () {
+    [GtkCallback] private void on_splitter_open_button_clicked () {
 
         // Show dialog
         var dialog = new Gtk.FileChooserDialog (
@@ -175,18 +183,6 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         dialog.destroy ();
 
         open_file (filepath);
-    }
-
-
-    // Drop files
-    [GtkCallback] private void on_drag_data_received (Gdk.DragContext ctx, int x, int y, Gtk.SelectionData data, uint info, uint time) {
-        string[] uris = data.get_uris ();
-        if (uris.length > 0) {
-            string file = uris[0].replace("file://","").replace("file:/","");
-            file = Uri.unescape_string (file);
-            open_file (file);
-        }
-        Gtk.drag_finish (ctx, true, false, time);
     }
 
 
