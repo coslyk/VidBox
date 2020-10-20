@@ -2,6 +2,7 @@
 videosplitter_srcs = [
     'AboutDialog.vala',
     'Application.vala',
+    'Dialogs.vala',
     'Ffmpeg.vala',
     'MainWindow.vala',
     'MpvController.vala',

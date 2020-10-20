@@ -155,38 +155,15 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             header_bar.subtitle = basename;
         }
         catch (Error e) {
-            var msgdlg = new Gtk.MessageDialog (
-                this,
-                Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                Gtk.MessageType.ERROR,
-                Gtk.ButtonsType.CLOSE,
-                _("Error parsing file: %s"), e.message
-            );
-            msgdlg.run ();
-            msgdlg.destroy ();
+            Dialogs.message (this, Gtk.MessageType.ERROR, _("Error parsing file: ") + e.message);
         }
     }
 
     [GtkCallback] private void on_splitter_open_button_clicked () {
-
-        // Show dialog
-        var dialog = new Gtk.FileChooserDialog (
-            _("Open file"), this, Gtk.FileChooserAction.OPEN,
-            _("Cancel"), Gtk.ResponseType.CANCEL,
-            _("Open"), Gtk.ResponseType.ACCEPT
-        );
-        var result = dialog.run ();
-
-        // File selected?
-        if (result != Gtk.ResponseType.ACCEPT) {
-            dialog.destroy ();
-            return;
+        string? filepath = Dialogs.open_file (this);
+        if (filepath != null) {
+            open_file (filepath);
         }
-        
-        string filepath = dialog.get_filename ();
-        dialog.destroy ();
-
-        open_file (filepath);
     }
 
 
@@ -322,27 +299,11 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
             try {
                 splitter.run_ffmpeg_cut.end (res);
-                var msgdlg = new Gtk.MessageDialog (
-                    this,
-                    Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                    Gtk.MessageType.INFO,
-                    Gtk.ButtonsType.CLOSE,
-                    _("Finished!")
-                );
-                msgdlg.run ();
-                msgdlg.destroy ();
+                Dialogs.message (this, Gtk.MessageType.INFO, _("Finished!"));
                 splitter.clear ();
             }
             catch (Error e) {
-                var msgdlg = new Gtk.MessageDialog (
-                    this,
-                    Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                    Gtk.MessageType.ERROR,
-                    Gtk.ButtonsType.CLOSE,
-                    _("Fails to cut: %s"), e.message
-                );
-                msgdlg.run ();
-                msgdlg.destroy ();
+                Dialogs.message (this, Gtk.MessageType.ERROR, _("Fails to cut: ") + e.message);
             }
         });
     }
