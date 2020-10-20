@@ -17,19 +17,22 @@
 [GtkTemplate (ui = "/com/github/coslyk/VideoSplitter/MainWindow.ui")]
 public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
+    // Common widgets
+    [GtkChild] private Gtk.Button back_button;
+    [GtkChild] private Gtk.HeaderBar header_bar;
+    [GtkChild] private Gtk.Spinner running_spinner;
+    [GtkChild] private Gtk.Stack main_stack;
+
+    // Splitter widgets and controller
     private MpvController mpv;
     private TaskManager task_manager;
     private TaskItem? selected_item;
-    [GtkChild] private Gtk.Button back_button;
-    [GtkChild] private Gtk.DrawingArea progress_bar;
-    [GtkChild] private Gtk.HeaderBar header_bar;
-    [GtkChild] private Gtk.GLArea video_area;
-    [GtkChild] private Gtk.Label start_pos_label;
-    [GtkChild] private Gtk.Label end_pos_label;
-    [GtkChild] private Gtk.ListBox listbox;
-    [GtkChild] private Gtk.MenuButton cut_button;
-    [GtkChild] private Gtk.Spinner running_spinner;
-    [GtkChild] private Gtk.Stack main_stack;
+    [GtkChild] private Gtk.DrawingArea splitter_progress_bar;
+    [GtkChild] private Gtk.GLArea splitter_video_area;
+    [GtkChild] private Gtk.Label splitter_start_pos_label;
+    [GtkChild] private Gtk.Label splitter_end_pos_label;
+    [GtkChild] private Gtk.ListBox splitter_listbox;
+    [GtkChild] private Gtk.MenuButton split_button;
         
 
     public MainWindow(Gtk.Application application) {
@@ -37,18 +40,19 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
     construct {
+        // Init splitter
         task_manager = new TaskManager ();
-        listbox.bind_model (task_manager, (item) => {
+        splitter_listbox.bind_model (task_manager, (item) => {
             var task = ((TaskItem) item);
             var label = new Gtk.Label (task.create_description ());
             task.notify.connect ((obj, param) => label.label = ((TaskItem) obj).create_description ());
             return label;
         });
 
-        mpv = new MpvController (video_area);
+        mpv = new MpvController (splitter_video_area);
         
         // Time updated
-        mpv.notify["playback-time"].connect (() => progress_bar.queue_draw ());
+        mpv.notify["playback-time"].connect (() => splitter_progress_bar.queue_draw ());
 
         // New file loaded
         mpv.notify["duration"].connect (() => {
@@ -66,21 +70,21 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         // Init menus
         var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
         var cut_menu_model = menu_builder.get_object ("cut-menu") as Menu;
-        cut_button.set_menu_model (cut_menu_model);
+        split_button.set_menu_model (cut_menu_model);
 
         // Add actions
         add_action (new PropertyAction ("merge", task_manager, "merge"));
         add_action (new PropertyAction ("exact-cut", task_manager, "exact-cut"));
         add_action (new PropertyAction ("remove-audio", task_manager, "remove-audio"));
         var action = new SimpleAction ("cut-video", null);
-        action.activate.connect (run_ffmpeg_cut);
+        action.activate.connect (splitter_run);
         add_action (action);
     }
 
     [GtkCallback] void on_back_button_clicked () {
         main_stack.visible_child_name = "home_page";
         back_button.visible = false;
-        cut_button.visible = false;
+        split_button.visible = false;
         header_bar.subtitle = null;
     }
 
@@ -88,22 +92,22 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Update progressbar, including time labels
     private void update_progressbar () {
         if (selected_item != null) {
-            progress_bar.queue_draw ();
-            start_pos_label.label = Utils.time2str (selected_item.start_pos);
-            end_pos_label.label = Utils.time2str (selected_item.end_pos);
+            splitter_progress_bar.queue_draw ();
+            splitter_start_pos_label.label = Utils.time2str (selected_item.start_pos);
+            splitter_end_pos_label.label = Utils.time2str (selected_item.end_pos);
         }
     }
 
 
     // Clear list
-    [GtkCallback] private void on_clear_button_clicked () {
+    [GtkCallback] private void on_splitter_clear_button_clicked () {
         task_manager.clear ();
         selected_item = null;
     }
 
 
     // Add segments
-    [GtkCallback] private void on_add_button_clicked () {
+    [GtkCallback] private void on_splitter_add_button_clicked () {
         double duration = mpv.duration;
         if (duration > 0) {
             selected_item = task_manager.add_item (0, duration);
@@ -112,8 +116,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
     // Remove selected segment
-    [GtkCallback] private void on_remove_button_clicked () {
-        unowned Gtk.ListBoxRow item = listbox.get_selected_row ();
+    [GtkCallback] private void on_splitter_remove_button_clicked () {
+        unowned Gtk.ListBoxRow item = splitter_listbox.get_selected_row ();
         if (item != null) {
             int index = item.get_index ();
             task_manager.remove_item (index);
@@ -124,7 +128,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Selected segment changes
-    [GtkCallback] private void on_listbox_row_activated (Gtk.ListBoxRow row) {
+    [GtkCallback] private void on_splitter_listbox_row_activated (Gtk.ListBoxRow row) {
         selected_item = (TaskItem) task_manager.get_item (row.get_index ());
         update_progressbar ();
     }
@@ -140,7 +144,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             // Show splitter
             main_stack.visible_child_name = "splitter_page";
             back_button.visible = true;
-            cut_button.visible = true;
+            split_button.visible = true;
 
             // Open file
             mpv.open (filepath);
@@ -187,11 +191,11 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Draw progressbar
-    [GtkCallback] private bool on_progress_bar_draw (Gtk.Widget widget, Cairo.Context cr) {
+    [GtkCallback] private bool on_splitter_progress_bar_draw (Gtk.Widget widget, Cairo.Context cr) {
 
         // Draw background
-        int width = progress_bar.get_allocated_width ();
-        int height = progress_bar.get_allocated_height ();
+        int width = splitter_progress_bar.get_allocated_width ();
+        int height = splitter_progress_bar.get_allocated_height ();
         double duration = mpv.duration;
         cr.set_source_rgb (0.3, 0.3, 0.3);
         cr.paint ();
@@ -230,7 +234,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Set playback time
-    [GtkCallback] private bool on_progress_bar_pressed (Gtk.Widget widget, Gdk.EventButton event) {
+    [GtkCallback] private bool on_splitter_progress_bar_pressed (Gtk.Widget widget, Gdk.EventButton event) {
         int width = widget.get_allocated_width ();
         mpv.playback_time = event.x * mpv.duration / width;
         return true;
@@ -238,51 +242,51 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Frame navigation
-    [GtkCallback] private void on_prev_frame_button_clicked () {
+    [GtkCallback] private void on_splitter_prev_frame_button_clicked () {
         mpv.previous_frame ();
     }
 
-    [GtkCallback] private void on_next_frame_button_clicked () {
+    [GtkCallback] private void on_splitter_next_frame_button_clicked () {
         mpv.next_frame ();
     }
 
 
     // Set start position
-    [GtkCallback] private void on_set_start_button_clicked () {
+    [GtkCallback] private void on_splitter_set_start_button_clicked () {
         if (selected_item != null) {
             double pos = mpv.playback_time;
             selected_item.start_pos = pos;
-            start_pos_label.label = Utils.time2str (pos);
+            splitter_start_pos_label.label = Utils.time2str (pos);
 
             if (pos > selected_item.end_pos) {
                 selected_item.end_pos = mpv.duration;
-                end_pos_label.label = Utils.time2str (mpv.duration);
+                splitter_end_pos_label.label = Utils.time2str (mpv.duration);
             }
 
-            progress_bar.queue_draw ();
+            splitter_progress_bar.queue_draw ();
         }
     }
 
 
     // Set end position
-    [GtkCallback] private void on_set_end_button_clicked () {
+    [GtkCallback] private void on_splitter_set_end_button_clicked () {
         if (selected_item != null) {
             double pos = mpv.playback_time;
             selected_item.end_pos = pos;
-            end_pos_label.label = Utils.time2str (pos);
+            splitter_end_pos_label.label = Utils.time2str (pos);
 
             if (pos < selected_item.start_pos) {
                 selected_item.start_pos = 0;
-                start_pos_label.label = Utils.time2str (0);
+                splitter_start_pos_label.label = Utils.time2str (0);
             }
 
-            progress_bar.queue_draw ();
+            splitter_progress_bar.queue_draw ();
         }
     }
 
 
     // Jump to start position
-    [GtkCallback] private void on_jump_start_button_clicked () {
+    [GtkCallback] private void on_splitter_jump_start_button_clicked () {
         if (selected_item != null) {
             mpv.pause = true;
             mpv.playback_time = selected_item.start_pos;
@@ -291,7 +295,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Jump to end position
-    [GtkCallback] private void on_jump_end_button_clicked () {
+    [GtkCallback] private void on_splitter_jump_end_button_clicked () {
         if (selected_item != null) {
             mpv.pause = true;
             mpv.playback_time = selected_item.end_pos;
@@ -300,21 +304,21 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
 
     // Play / Pause
-    [GtkCallback] private void on_pause_button_clicked () {
+    [GtkCallback] private void on_splitter_pause_button_clicked () {
         mpv.pause = !mpv.pause;
     }
 
 
     // Cut!
-    private void run_ffmpeg_cut () {
+    private void splitter_run () {
 
-        cut_button.sensitive = false;
+        split_button.sensitive = false;
         running_spinner.start ();
 
         task_manager.run_ffmpeg_cut.begin ((obj, res) => {
 
             running_spinner.stop ();
-            cut_button.sensitive = true;
+            split_button.sensitive = true;
 
             try {
                 task_manager.run_ffmpeg_cut.end (res);
