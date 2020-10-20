@@ -14,13 +14,13 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-class VideoSplitter.TaskManager : Object, ListModel {
+class VideoSplitter.Splitter : Object, ListModel {
 
     public bool exact_cut { get; set; default = false; }
     public bool merge { get; set; default = false; }
     public bool remove_audio { get; set; default = false; }
 
-    private GenericArray<TaskItem> items = new GenericArray<TaskItem> ();
+    private GenericArray<SplitterItem> items = new GenericArray<SplitterItem> ();
     private string filepath;
     private string format;
 
@@ -34,8 +34,8 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
 
     // Add item
-    public TaskItem add_item (double start_pos, double end_pos) {
-        var item = new TaskItem (start_pos, end_pos);
+    public SplitterItem add_item (double start_pos, double end_pos) {
+        var item = new SplitterItem (start_pos, end_pos);
         items.add (item);
         items_changed (items.length - 1, 0, 1);
         return item;
@@ -72,7 +72,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
         // Cut
         var outfiles = new GenericArray<string> ();
-        foreach (unowned TaskItem item in items.data) {
+        foreach (unowned SplitterItem item in items.data) {
             string start_pos_str = Utils.time2str (item.start_pos).replace (":", ".");
             string end_pos_str = Utils.time2str (item.end_pos).replace (":", ".");
             string outfile = @"$(outfile_base)_$(start_pos_str)-$(end_pos_str).$(format)";
@@ -96,7 +96,7 @@ class VideoSplitter.TaskManager : Object, ListModel {
 
     // Implement ListModel
     public Type get_item_type () {
-        return typeof (TaskItem);
+        return typeof (SplitterItem);
     }
 
     public Object? get_item (uint position) {

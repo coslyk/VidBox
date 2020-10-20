@@ -6,8 +6,8 @@ videosplitter_srcs = [
     'MainWindow.vala',
     'MpvController.vala',
     'PreferenceDialog.vala',
-    'TaskItem.vala',
-    'TaskManager.vala',
+    'SplitterItem.vala',
+    'Splitter.vala',
     'Utils.vala',
     'main.vala'
 ]

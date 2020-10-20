@@ -16,12 +16,12 @@
 
 using VideoSplitter.Utils;
 
-class VideoSplitter.TaskItem : Object {
+class VideoSplitter.SplitterItem : Object {
 
     public double start_pos { get; set construct; }
     public double end_pos { get; set construct; }
 
-    public TaskItem (double start_pos, double end_pos) {
+    public SplitterItem (double start_pos, double end_pos) {
         Object (start_pos: start_pos, end_pos: end_pos);
     }
 

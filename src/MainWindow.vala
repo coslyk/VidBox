@@ -25,8 +25,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Splitter widgets and controller
     private MpvController mpv;
-    private TaskManager task_manager;
-    private TaskItem? selected_item;
+    private Splitter splitter;
+    private SplitterItem? selected_item;
     [GtkChild] private Gtk.DrawingArea splitter_progress_bar;
     [GtkChild] private Gtk.GLArea splitter_video_area;
     [GtkChild] private Gtk.Label splitter_start_pos_label;
@@ -41,11 +41,11 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     construct {
         // Init splitter
-        task_manager = new TaskManager ();
-        splitter_listbox.bind_model (task_manager, (item) => {
-            var task = ((TaskItem) item);
+        splitter = new Splitter ();
+        splitter_listbox.bind_model (splitter, (item) => {
+            var task = ((SplitterItem) item);
             var label = new Gtk.Label (task.create_description ());
-            task.notify.connect ((obj, param) => label.label = ((TaskItem) obj).create_description ());
+            task.notify.connect ((obj, param) => label.label = ((SplitterItem) obj).create_description ());
             return label;
         });
 
@@ -56,7 +56,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
         // New file loaded
         mpv.notify["duration"].connect (() => {
-            selected_item = task_manager.add_item (0, mpv.duration);
+            selected_item = splitter.add_item (0, mpv.duration);
             update_progressbar ();
         });
 
@@ -73,9 +73,9 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         split_button.set_menu_model (cut_menu_model);
 
         // Add actions
-        add_action (new PropertyAction ("merge", task_manager, "merge"));
-        add_action (new PropertyAction ("exact-cut", task_manager, "exact-cut"));
-        add_action (new PropertyAction ("remove-audio", task_manager, "remove-audio"));
+        add_action (new PropertyAction ("merge", splitter, "merge"));
+        add_action (new PropertyAction ("exact-cut", splitter, "exact-cut"));
+        add_action (new PropertyAction ("remove-audio", splitter, "remove-audio"));
         var action = new SimpleAction ("cut-video", null);
         action.activate.connect (splitter_run);
         add_action (action);
@@ -101,7 +101,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Clear list
     [GtkCallback] private void on_splitter_clear_button_clicked () {
-        task_manager.clear ();
+        splitter.clear ();
         selected_item = null;
     }
 
@@ -110,7 +110,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkCallback] private void on_splitter_add_button_clicked () {
         double duration = mpv.duration;
         if (duration > 0) {
-            selected_item = task_manager.add_item (0, duration);
+            selected_item = splitter.add_item (0, duration);
             update_progressbar ();
         }
     }
@@ -120,8 +120,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         unowned Gtk.ListBoxRow item = splitter_listbox.get_selected_row ();
         if (item != null) {
             int index = item.get_index ();
-            task_manager.remove_item (index);
-            selected_item = (TaskItem) task_manager.get_item (0);
+            splitter.remove_item (index);
+            selected_item = (SplitterItem) splitter.get_item (0);
             update_progressbar ();
         }
     }
@@ -129,7 +129,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Selected segment changes
     [GtkCallback] private void on_splitter_listbox_row_activated (Gtk.ListBoxRow row) {
-        selected_item = (TaskItem) task_manager.get_item (row.get_index ());
+        selected_item = (SplitterItem) splitter.get_item (row.get_index ());
         update_progressbar ();
     }
 
@@ -139,7 +139,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
         try {
             // Get file info
-            task_manager.new_file (filepath);
+            splitter.new_file (filepath);
 
             // Show splitter
             main_stack.visible_child_name = "splitter_page";
@@ -315,13 +315,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         split_button.sensitive = false;
         running_spinner.start ();
 
-        task_manager.run_ffmpeg_cut.begin ((obj, res) => {
+        splitter.run_ffmpeg_cut.begin ((obj, res) => {
 
             running_spinner.stop ();
             split_button.sensitive = true;
 
             try {
-                task_manager.run_ffmpeg_cut.end (res);
+                splitter.run_ffmpeg_cut.end (res);
                 var msgdlg = new Gtk.MessageDialog (
                     this,
                     Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -331,7 +331,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
                 );
                 msgdlg.run ();
                 msgdlg.destroy ();
-                task_manager.clear ();
+                splitter.clear ();
             }
             catch (Error e) {
                 var msgdlg = new Gtk.MessageDialog (
