@@ -116,12 +116,18 @@ class VideoSplitter.MpvController : Object {
         });
     }
 
+
     // Remove callback function
     ~MpvController () {
-        mpv_rctx.set_update_callback (null);
+
+        if (mpv_rctx != null) {
+            mpv_rctx.set_update_callback (null);
+        }
+        
         mpv.set_wakeup_callback (null);
     }
 
+    
     // Open video
     public void open (string uri) {
         (unowned string)[] cmd = { "loadfile", uri, null };
