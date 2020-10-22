@@ -37,7 +37,7 @@ class VideoSplitter.PreferenceDialog : Gtk.Dialog {
 
         path_chooser_button.set_current_folder (settings.get_string ("output-directory"));
         path_chooser_button.selection_changed.connect (() => {
-            settings.set_string ("output-directory", path_chooser_button.get_file ().get_path ());
+            Application.settings.set_string ("output-directory", path_chooser_button.get_file ().get_path ());
         });
     }
 }
