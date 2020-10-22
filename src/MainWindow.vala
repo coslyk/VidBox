@@ -33,6 +33,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.Label splitter_end_pos_label;
     [GtkChild] private Gtk.ListBox splitter_listbox;
     [GtkChild] private Gtk.MenuButton split_button;
+
+    // Merger widgets and controller
         
 
     public MainWindow(Gtk.Application application) {
@@ -306,5 +308,12 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
                 Dialogs.message (this, Gtk.MessageType.ERROR, _("Fails to cut: ") + e.message);
             }
         });
+    }
+
+
+    // Merger
+    [GtkCallback] private void on_merger_open_button_clicked () {
+        main_stack.visible_child_name = "merger_page";
+        back_button.visible = true;
     }
 }
