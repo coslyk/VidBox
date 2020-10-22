@@ -58,7 +58,6 @@ namespace VideoSplitter.Ffmpeg {
     public async void cut (string infile, string outfile, string format, double start_pos, double end_pos,
                            bool keyframe_cut, bool remove_audio) throws Error {
 
-        SourceFunc callback = cut.callback;
         string start_pos_str = Utils.time2str (start_pos);
         string duration_str = Utils.time2str (end_pos - start_pos);
 
@@ -112,42 +111,12 @@ namespace VideoSplitter.Ffmpeg {
         args.add (null);
 
         // Run ffmpeg
-        Pid child_pid;
-        int standard_error;
-        int[] exit_status = new int[1];
-        Process.spawn_async_with_pipes (null,
-            args.data,
-            null,
-            SpawnFlags.SEARCH_PATH | SpawnFlags.DO_NOT_REAP_CHILD,
-            null,
-            out child_pid,
-            null,
-            null,
-            out standard_error
-        );
-
-        // Wait until finish
-        ChildWatch.add (child_pid, (pid, status) => {
-            exit_status[0] = status;
-            Idle.add ((owned) callback);
-        });
-        yield;
-
-        if (exit_status[0] != 0) {
-            IOChannel err = new IOChannel.unix_new (standard_error);
-            string errstr;
-            size_t errstr_len;
-            err.read_to_end (out errstr, out errstr_len);
-            Process.close_pid (child_pid);
-            throw new FfmpegError.CONVERT_FAILED (errstr);
-        }
-        Process.close_pid (child_pid);
+        yield Utils.run_process (args.data);
     }
 
 
     // Merge videos
     public async void merge (string[] infiles, string outfile, string format) throws Error {
-        SourceFunc callback = merge.callback;
 
         // FFMpeg args
         (unowned string)[] args = {
@@ -172,42 +141,6 @@ namespace VideoSplitter.Ffmpeg {
         var concat_text = string.joinv ("\n", entries.data);
 
         // Run ffmpeg
-        Pid child_pid;
-        int standart_input;
-        int standard_error;
-        int[] exit_status = new int[1];
-        Process.spawn_async_with_pipes (null,
-            args,
-            null,
-            SpawnFlags.SEARCH_PATH | SpawnFlags.DO_NOT_REAP_CHILD,
-            null,
-            out child_pid,
-            out standart_input,
-            null,
-            out standard_error
-        );
-
-        // Write file lists
-        IOChannel in_pipe = new IOChannel.unix_new (standart_input);
-        size_t bytes_written;
-        in_pipe.write_chars (concat_text.to_utf8 (), out bytes_written);
-        in_pipe.shutdown (true);
-
-        // Wait until finish
-        ChildWatch.add (child_pid, (pid, status) => {
-            exit_status[0] = status;
-            Idle.add ((owned) callback);
-        });
-        yield;
-
-        if (exit_status[0] != 0) {
-            IOChannel err = new IOChannel.unix_new (standard_error);
-            string errstr;
-            size_t errstr_len;
-            err.read_to_end (out errstr, out errstr_len);
-            Process.close_pid (child_pid);
-            throw new FfmpegError.CONVERT_FAILED (errstr);
-        }
-        Process.close_pid (child_pid);
+        yield Utils.run_process (args, concat_text);
     }
 }
