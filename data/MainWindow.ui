@@ -7,12 +7,22 @@
     <property name="can_focus">False</property>
     <property name="icon_name">list-add-symbolic</property>
   </object>
+  <object class="GtkImage" id="add_image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-add-symbolic</property>
+  </object>
   <object class="GtkImage" id="back_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">pan-start-symbolic</property>
   </object>
   <object class="GtkImage" id="clear_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-remove-all-symbolic</property>
+  </object>
+  <object class="GtkImage" id="clear_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">list-remove-all-symbolic</property>
@@ -65,6 +75,11 @@
     <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="remove_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-remove-symbolic</property>
+  </object>
+  <object class="GtkImage" id="remove_image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">list-remove-symbolic</property>
@@ -249,6 +264,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Add segment</property>
+                    <property name="image">add_image</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="on_splitter_add_button_clicked" swapped="no"/>
@@ -264,6 +280,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Remove selected segment</property>
+                    <property name="image">remove_image</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="on_splitter_remove_button_clicked" swapped="no"/>
@@ -279,6 +296,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Remove all segments</property>
+                    <property name="image">clear_image</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="on_splitter_clear_button_clicked" swapped="no"/>
@@ -524,7 +542,7 @@
                     <property name="can_focus">True</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
-                    <property name="image">add_image</property>
+                    <property name="image">add_image2</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
                   </object>
@@ -540,7 +558,7 @@
                     <property name="can_focus">True</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
-                    <property name="image">remove_image</property>
+                    <property name="image">remove_image2</property>
                     <property name="relief">none</property>
                   </object>
                   <packing>
@@ -555,7 +573,7 @@
                     <property name="can_focus">True</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
-                    <property name="image">clear_image</property>
+                    <property name="image">clear_image2</property>
                     <property name="relief">none</property>
                   </object>
                   <packing>
