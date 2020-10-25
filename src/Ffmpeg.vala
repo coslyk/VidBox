@@ -17,40 +17,111 @@
 namespace VideoSplitter.Ffmpeg {
 
     errordomain FfmpegError {
-        FORMAT_DETECTION_FAILED,
+        VIDEO_PARSE_FAILED,
         CONVERT_FAILED
     }
 
-    
-    // Detect format of video
-    public string detect_format (string filepath) throws Error {
+
+    [Compact]
+    public class VideoInfo {
+        public string format;
+        public double duration;
+        public string vcodec;
+        public string pix_fmt;
+        public int64 width;
+        public int64 height;
+        public int64 bits_per_raw_sample;
+        public string acodec;
+        public string audio_channel_layout;
+        public int64 audio_channels;
+        public int64 audio_sample_rate;
+        public int64 int_prop_hash;
+    }
+
+    // Parse videos
+    public VideoInfo parse_video (string filepath) throws Error {
 
         // Run ffprobe
-        (unowned string)[] args = 
-            { "ffprobe", "-hide_banner", "-loglevel", "warning", "-of", "json", "-show_format", "-i", filepath };
+        (unowned string)[] args = {
+            "ffprobe",
+            "-hide_banner",
+            "-loglevel", "warning",
+            "-of", "json",
+            "-show_format",
+            "-show_streams",
+            "-i", filepath
+        };
         string output;
         string err;
         int exit_status;
         Process.spawn_sync (null, args, null, SpawnFlags.SEARCH_PATH, null, out output, out err, out exit_status);
         if (err.length != 0) {
-            throw new FfmpegError.FORMAT_DETECTION_FAILED (err);
+            throw new FfmpegError.VIDEO_PARSE_FAILED (err);
         }
 
         // Parse output
         var parser = new Json.Parser ();
         parser.load_from_data (output);
-        unowned string format_str = parser.get_root ().get_object ().get_object_member ("format").get_string_member ("format_name");
-        string[] formats = format_str.split(",");
+        unowned Json.Object? root = parser.get_root ().get_object ();
+        if (root == null) {
+            throw new FfmpegError.VIDEO_PARSE_FAILED ("Cannot parse the output of ffprobe.");
+        }
 
-        // Compare with filename
+        VideoInfo info = new VideoInfo ();
+
+        // Format
+        unowned Json.Object? root_format = root.get_object_member ("format");
+        if (root_format == null) {
+            throw new FfmpegError.VIDEO_PARSE_FAILED ("Cannot parse the output of ffprobe.");
+        }
+
+        unowned string format_str = root_format.get_string_member ("format_name");
+        string[] formats = format_str.split(",");
         int idx = filepath.last_index_of_char ('.');
         if (idx != -1) {
             string ext = filepath.substring (idx + 1);
             if (ext in formats) {
-                return ext;
+                info.format = (owned) ext;
+            } else {
+                info.format = (owned) formats[0];
+            }
+        } else {
+            info.format = (owned) formats[0];
+        }
+
+        // Duration
+        info.duration = double.parse (root_format.get_string_member ("duration"));
+
+        // Streams
+        info.vcodec = info.acodec = null;
+
+        unowned Json.Array root_streams = root.get_array_member ("streams");
+        for (int i = 0; i < root_streams.get_length (); i++) {
+            unowned Json.Object stream = root_streams.get_object_element (i);
+            if (stream.get_string_member ("codec_type") == "video") {
+                info.vcodec = stream.get_string_member ("codec_name");
+                info.pix_fmt = stream.get_string_member ("pix_fmt");
+                info.width = stream.get_int_member ("width");
+                info.height = stream.get_int_member ("height");
+                info.bits_per_raw_sample = int64.parse (stream.get_string_member ("bits_per_raw_sample"));
+            } else if (stream.get_string_member ("codec_type") == "audio") {
+                info.acodec = stream.get_string_member ("codec_name");
+                info.audio_channel_layout = stream.get_string_member ("channel_layout");
+                info.audio_channels = stream.get_int_member ("channels");
+                info.audio_sample_rate = int64.parse (stream.get_string_member ("sample_rate"));
             }
         }
-        return (owned) formats[0];
+
+        // Check if video and audio streams are parsed
+        if (info.vcodec == null || info.acodec == null) {
+            throw new FfmpegError.VIDEO_PARSE_FAILED ("Cannot extract information of streams.");
+        }
+
+        // Calculate hash
+        info.int_prop_hash = info.width + (info.height << 16) + (info.bits_per_raw_sample << 32) +
+                             (info.audio_channels << 40) + ((info.audio_sample_rate / 100) << 48);
+        
+        return info;
     }
 
 

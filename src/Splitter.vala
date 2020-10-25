@@ -22,12 +22,12 @@ class VideoSplitter.Splitter : Object, ListModel {
 
     private GenericArray<SplitterItem> items = new GenericArray<SplitterItem> ();
     private string filepath;
-    private string format;
+    private Ffmpeg.VideoInfo info;
 
 
     // Open a new file, clear the previous list
     public void new_file (string filepath) throws Error {
-        this.format = Ffmpeg.detect_format (filepath);
+        info = Ffmpeg.parse_video (filepath);
         this.filepath = filepath;
         clear ();
     }
@@ -75,15 +75,15 @@ class VideoSplitter.Splitter : Object, ListModel {
         foreach (unowned SplitterItem item in items.data) {
             string start_pos_str = Utils.time2str (item.start_pos).replace (":", ".");
             string end_pos_str = Utils.time2str (item.end_pos).replace (":", ".");
-            string outfile = @"$(outfile_base)_$(start_pos_str)-$(end_pos_str).$(format)";
-            yield Ffmpeg.cut (filepath, outfile, format, item.start_pos, item.end_pos, !exact_cut, remove_audio);
+            string outfile = @"$(outfile_base)_$(start_pos_str)-$(end_pos_str).$(info.format)";
+            yield Ffmpeg.cut (filepath, outfile, info.format, item.start_pos, item.end_pos, !exact_cut, remove_audio);
             outfiles.add ((owned) outfile);
         }
 
         // Merge after cut
         if (merge) {
-            string merged_file = @"$(outfile_base)_cut_merge.$(format)";
-            yield Ffmpeg.merge (outfiles.data, merged_file, format);
+            string merged_file = @"$(outfile_base)_cut_merge.$(info.format)";
+            yield Ffmpeg.merge (outfiles.data, merged_file, info.format);
 
             // Remove cut files
             foreach (unowned string outfile in outfiles.data) {
