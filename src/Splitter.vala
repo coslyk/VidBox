@@ -19,6 +19,7 @@ class VideoSplitter.Splitter : Object, ListModel {
     public bool exact_cut { get; set; default = false; }
     public bool merge { get; set; default = false; }
     public bool remove_audio { get; set; default = false; }
+    public Ffmpeg.VideoInfo video_info { get { return info; } }
 
     private GenericArray<SplitterItem> items = new GenericArray<SplitterItem> ();
     private string filepath;
@@ -30,6 +31,7 @@ class VideoSplitter.Splitter : Object, ListModel {
         info = Ffmpeg.parse_video (filepath);
         this.filepath = filepath;
         clear ();
+        add_item (0, info.duration);
     }
 
 

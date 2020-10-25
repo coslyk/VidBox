@@ -51,16 +51,9 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             return label;
         });
 
+        // Mpv
         mpv = new MpvController (splitter_video_area);
-        
-        // Time updated
         mpv.notify["playback-time"].connect (() => splitter_progress_bar.queue_draw ());
-
-        // New file loaded
-        mpv.notify["duration"].connect (() => {
-            selected_item = splitter.add_item (0, mpv.duration);
-            update_progressbar ();
-        });
 
         // Logo
         try {
@@ -110,7 +103,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Add segments
     [GtkCallback] private void on_splitter_add_button_clicked () {
-        double duration = mpv.duration;
+        double duration = splitter.video_info.duration;
         if (duration > 0) {
             selected_item = splitter.add_item (0, duration);
             update_progressbar ();
@@ -142,13 +135,15 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         try {
             // Get file info
             splitter.new_file (filepath);
+            selected_item = (SplitterItem) splitter.get_item(0);
+            update_progressbar ();
 
             // Show splitter
             main_stack.visible_child_name = "splitter_page";
             back_button.visible = true;
             split_button.visible = true;
 
-            // Open file
+            // Preview video
             mpv.open (filepath);
             string basename = Path.get_basename (filepath);
             if (basename.char_count () > 50) {
@@ -175,7 +170,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         // Draw background
         int width = splitter_progress_bar.get_allocated_width ();
         int height = splitter_progress_bar.get_allocated_height ();
-        double duration = mpv.duration;
+        double duration = splitter.video_info.duration;
         cr.set_source_rgb (0.3, 0.3, 0.3);
         cr.paint ();
         
@@ -215,7 +210,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Set playback time
     [GtkCallback] private bool on_splitter_progress_bar_pressed (Gtk.Widget widget, Gdk.EventButton event) {
         int width = widget.get_allocated_width ();
-        mpv.playback_time = event.x * mpv.duration / width;
+        mpv.playback_time = event.x * splitter.video_info.duration / width;
         return true;
     }
 
@@ -238,8 +233,9 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             splitter_start_pos_label.label = Utils.time2str (pos);
 
             if (pos > selected_item.end_pos) {
-                selected_item.end_pos = mpv.duration;
-                splitter_end_pos_label.label = Utils.time2str (mpv.duration);
+                double duration = splitter.video_info.duration;
+                selected_item.end_pos = duration;
+                splitter_end_pos_label.label = Utils.time2str (duration);
             }
 
             splitter_progress_bar.queue_draw ();
