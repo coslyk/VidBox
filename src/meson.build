@@ -5,6 +5,7 @@ videosplitter_srcs = [
     'Dialogs.vala',
     'Ffmpeg.vala',
     'MainWindow.vala',
+    'Merger.vala',
     'MpvController.vala',
     'PreferenceDialog.vala',
     'SplitterItem.vala',
