@@ -35,6 +35,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.MenuButton split_button;
 
     // Merger widgets and controller
+    private Merger merger;
+    [GtkChild] private Gtk.ListBox merger_listbox;
         
 
     public MainWindow(Gtk.Application application) {
@@ -54,6 +56,12 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         // Mpv
         mpv = new MpvController (splitter_video_area);
         mpv.notify["playback-time"].connect (() => splitter_progress_bar.queue_draw ());
+
+        // Merger
+        merger = new Merger ();
+        merger_listbox.bind_model (merger, (item) => {
+            return new Gtk.Label (((Ffmpeg.VideoInfo) item).filepath);
+        });
 
         // Logo
         try {
@@ -128,9 +136,11 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         update_progressbar ();
     }
 
-
-    // Open file
-    private void open_file (string filepath) {
+    [GtkCallback] private void on_splitter_open_button_clicked () {
+        string? filepath = Dialogs.open_file (this);
+        if (filepath == null) {
+            return;
+        }
 
         try {
             // Get file info
@@ -142,24 +152,17 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             main_stack.visible_child_name = "splitter_page";
             back_button.visible = true;
             split_button.visible = true;
-
-            // Preview video
-            mpv.open (filepath);
             string basename = Path.get_basename (filepath);
             if (basename.char_count () > 50) {
                 basename = basename.substring (0, basename.index_of_nth_char (50)) + "...";
             }
             header_bar.subtitle = basename;
+
+            // Preview video
+            mpv.open (filepath);
         }
         catch (Error e) {
             Dialogs.message (this, Gtk.MessageType.ERROR, _("Error parsing file: ") + e.message);
-        }
-    }
-
-    [GtkCallback] private void on_splitter_open_button_clicked () {
-        string? filepath = Dialogs.open_file (this);
-        if (filepath != null) {
-            open_file (filepath);
         }
     }
 
