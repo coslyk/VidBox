@@ -22,14 +22,12 @@ class VideoSplitter.Splitter : Object, ListModel {
     public Ffmpeg.VideoInfo video_info { get { return info; } }
 
     private GenericArray<SplitterItem> items = new GenericArray<SplitterItem> ();
-    private string filepath;
     private Ffmpeg.VideoInfo info;
 
 
     // Open a new file, clear the previous list
     public void new_file (string filepath) throws Error {
         info = Ffmpeg.parse_video (filepath);
-        this.filepath = filepath;
         clear ();
         add_item (0, info.duration);
     }
@@ -67,9 +65,9 @@ class VideoSplitter.Splitter : Object, ListModel {
         var settings = Application.settings;
         string outfile_base;
         if (settings.get_boolean ("use-input-directory")) {
-            outfile_base = filepath;
+            outfile_base = info.filepath;
         } else {
-            outfile_base = Path.build_filename (settings.get_string ("output-directory"), Path.get_basename (filepath));
+            outfile_base = Path.build_filename (settings.get_string ("output-directory"), Path.get_basename (info.filepath));
         }
 
         // Cut
@@ -78,7 +76,7 @@ class VideoSplitter.Splitter : Object, ListModel {
             string start_pos_str = Utils.time2str (item.start_pos).replace (":", ".");
             string end_pos_str = Utils.time2str (item.end_pos).replace (":", ".");
             string outfile = @"$(outfile_base)_$(start_pos_str)-$(end_pos_str).$(info.format)";
-            yield Ffmpeg.cut (filepath, outfile, info.format, item.start_pos, item.end_pos, !exact_cut, remove_audio);
+            yield Ffmpeg.cut (info.filepath, outfile, info.format, item.start_pos, item.end_pos, !exact_cut, remove_audio);
             outfiles.add ((owned) outfile);
         }
 

@@ -22,8 +22,8 @@ namespace VideoSplitter.Ffmpeg {
     }
 
 
-    [Compact]
-    public class VideoInfo {
+    public class VideoInfo : Object {
+        public string filepath;
         public string format;
         public double duration;
         public string vcodec;
@@ -68,6 +68,7 @@ namespace VideoSplitter.Ffmpeg {
         }
 
         VideoInfo info = new VideoInfo ();
+        info.filepath = filepath;
 
         // Format
         unowned Json.Object? root_format = root.get_object_member ("format");
