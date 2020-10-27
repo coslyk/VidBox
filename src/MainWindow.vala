@@ -37,6 +37,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Merger widgets and controller
     private Merger merger;
     [GtkChild] private Gtk.ListBox merger_listbox;
+    [GtkChild] private Gtk.Entry merger_outfile_entry;
         
 
     public MainWindow(Gtk.Application application) {
@@ -322,6 +323,10 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         var files = Dialogs.open_files (this);
         if (files == null) {
             return;
+        }
+
+        if (merger.get_n_items () == 0) {    // First item
+            merger_outfile_entry.text = Path.get_basename (files.data) + "_merged";
         }
 
         try {
