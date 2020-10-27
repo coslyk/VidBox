@@ -315,4 +315,61 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         main_stack.visible_child_name = "merger_page";
         back_button.visible = true;
     }
+
+
+    // Open files
+    [GtkCallback] private void on_merger_add_button_clicked () {
+        var files = Dialogs.open_files (this);
+        if (files == null) {
+            return;
+        }
+
+        try {
+            foreach (unowned string filepath in files) {
+                merger.add_item (filepath);
+            }
+        } catch (Error e) {
+            Dialogs.message (this, Gtk.MessageType.ERROR, _("Cannot add file: ") + e.message);
+        }
+    }
+
+
+    // Remove item
+    [GtkCallback] private void on_merger_remove_button_clicked () {
+        unowned Gtk.ListBoxRow item = merger_listbox.get_selected_row ();
+        if (item != null) {
+            int index = item.get_index ();
+            merger.remove_item (index);
+        }
+    }
+
+
+    // Clear items
+    [GtkCallback] private void on_merger_clear_button_clicked () {
+        merger.clear ();
+    }
+
+
+    // Move items
+    [GtkCallback] private void on_merger_up_button_clicked () {
+        unowned Gtk.ListBoxRow item = merger_listbox.get_selected_row ();
+        if (item != null) {
+            int index = item.get_index ();
+            if (index > 0) {
+                merger.move_up_item (index);
+                merger_listbox.select_row (merger_listbox.get_row_at_index (index - 1));
+            }
+        }
+    }
+
+    [GtkCallback] private void on_merger_down_button_clicked () {
+        unowned Gtk.ListBoxRow item = merger_listbox.get_selected_row ();
+        if (item != null) {
+            int index = item.get_index ();
+            if (index < merger.get_n_items () - 1) {
+                merger.move_down_item (index);
+                merger_listbox.select_row (merger_listbox.get_row_at_index (index + 1));
+            }
+        }
+    }
 }

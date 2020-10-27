@@ -27,6 +27,11 @@
     <property name="can_focus">False</property>
     <property name="icon_name">list-remove-all-symbolic</property>
   </object>
+  <object class="GtkImage" id="down_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">go-down-symbolic</property>
+  </object>
   <object class="GtkImage" id="jump_end_image">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -101,6 +106,11 @@
     <property name="can_focus">False</property>
     <property name="icon_name">edit-cut</property>
   </object>
+  <object class="GtkImage" id="up_image">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">go-up-symbolic</property>
+  </object>
   <template class="VideoSplitterMainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="default_width">800</property>
@@ -116,7 +126,6 @@
           <object class="GtkButton" id="back_button">
             <property name="can_focus">False</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Open file</property>
             <property name="image">back_image</property>
             <property name="relief">half</property>
             <property name="always_show_image">True</property>
@@ -545,6 +554,7 @@
                     <property name="image">add_image2</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
+                    <signal name="clicked" handler="on_merger_add_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -560,6 +570,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">remove_image2</property>
                     <property name="relief">none</property>
+                    <signal name="clicked" handler="on_merger_remove_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -575,11 +586,46 @@
                     <property name="receives_default">True</property>
                     <property name="image">clear_image2</property>
                     <property name="relief">none</property>
+                    <signal name="clicked" handler="on_merger_clear_button_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="merger_up_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="focus_on_click">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">up_image</property>
+                    <property name="relief">none</property>
+                    <property name="always_show_image">True</property>
+                    <signal name="clicked" handler="on_merger_up_button_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="merger_down_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="focus_on_click">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">down_image</property>
+                    <property name="relief">none</property>
+                    <property name="always_show_image">True</property>
+                    <signal name="clicked" handler="on_merger_down_button_clicked" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
               </object>

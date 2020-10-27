@@ -29,6 +29,8 @@ namespace VideoSplitter.Dialogs {
         dialog.destroy ();
     }
 
+
+    // Open single file
     public string? open_file (Gtk.Window? parent) {
         var dialog = new Gtk.FileChooserDialog (
             _("Open file"), parent, Gtk.FileChooserAction.OPEN,
@@ -46,5 +48,27 @@ namespace VideoSplitter.Dialogs {
         string? filepath = dialog.get_filename ();
         dialog.destroy ();
         return filepath;
+    }
+
+
+    // Open multiple files
+    public SList<string>? open_files (Gtk.Window? parent) {
+        var dialog = new Gtk.FileChooserDialog (
+            _("Open files"), parent, Gtk.FileChooserAction.OPEN,
+            _("Cancel"), Gtk.ResponseType.CANCEL,
+            _("Open"), Gtk.ResponseType.ACCEPT
+        );
+        dialog.select_multiple = true;
+        var result = dialog.run ();
+
+        // File selected?
+        if (result != Gtk.ResponseType.ACCEPT) {
+            dialog.destroy ();
+            return null;
+        }
+        
+        var files = dialog.get_filenames ();
+        dialog.destroy ();
+        return files;
     }
 }

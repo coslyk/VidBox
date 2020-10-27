@@ -42,6 +42,28 @@ class VideoSplitter.Merger : Object, ListModel {
     }
 
 
+    // Move up item
+    public void move_up_item (int index) {
+        if (index > 0) {
+            Ffmpeg.VideoInfo tmp = items[index];
+            items[index] = items[index - 1];
+            items[index - 1] = (owned) tmp;
+            items_changed (index - 1, 2, 2);
+        }
+    }
+
+
+    // Move down item
+    public void move_down_item (int index) {
+        if (index < items.length - 1) {
+            Ffmpeg.VideoInfo tmp = items[index];
+            items[index] = items[index + 1];
+            items[index + 1] = (owned) tmp;
+            items_changed (index, 2, 2);
+        }
+    }
+
+
     // Lossless merge
     public async void run_lossless_merge (string outfile) throws Error {
 

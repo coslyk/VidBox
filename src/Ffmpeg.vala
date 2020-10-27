@@ -94,7 +94,8 @@ namespace VideoSplitter.Ffmpeg {
         info.duration = double.parse (root_format.get_string_member ("duration"));
 
         // Streams
-        info.vcodec = info.acodec = null;
+        info.vcodec = null;
+        info.acodec = null;
 
         unowned Json.Array root_streams = root.get_array_member ("streams");
         for (int i = 0; i < root_streams.get_length (); i++) {
