@@ -127,6 +127,18 @@ namespace VideoSplitter.Ffmpeg {
     }
 
 
+    // Check mergeable
+    public bool is_losslessly_mergeable (VideoInfo v1, VideoInfo v2) {
+        
+        if (v1.int_prop_hash != v2.int_prop_hash) {
+            return false;
+        }
+
+        return v1.vcodec == v2.vcodec && v1.pix_fmt == v2.pix_fmt && v1.acodec == v2.acodec &&
+               v1.audio_channel_layout == v2.audio_channel_layout && v1.audio_sample_rate == v2.audio_sample_rate;
+    }
+
+
     // Cut videos
     public async void cut (string infile, string outfile, string format, double start_pos, double end_pos,
                            bool keyframe_cut, bool remove_audio) throws Error {

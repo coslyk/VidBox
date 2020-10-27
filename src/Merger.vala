@@ -14,7 +14,12 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-class VideoSplitter.Merger : Object, ListModel {
+public errordomain VideoSplitter.MergeError {
+    TOO_LESS_ITEMS,
+    NOT_LOSSLESSLY_MERGEABLE
+}
+
+public class VideoSplitter.Merger : Object, ListModel {
 
     private GenericArray<Ffmpeg.VideoInfo> items = new GenericArray<Ffmpeg.VideoInfo> ();
 
@@ -65,18 +70,41 @@ class VideoSplitter.Merger : Object, ListModel {
 
 
     // Lossless merge
-    public async void run_lossless_merge (string outfile) throws Error {
+    public async void run_lossless_merge (string filename) throws Error {
 
         if (items.length < 2) {
-            return;
+            throw new MergeError.TOO_LESS_ITEMS ("Too less items for merging!");
         }
 
-        // Cut
+        // Check mergeable
+        unowned Ffmpeg.VideoInfo first = items[0];
+        for (int i = 1; i < items.length; i++) {
+            if (!Ffmpeg.is_losslessly_mergeable (first, items[i])) {
+                throw new MergeError.NOT_LOSSLESSLY_MERGEABLE ("Imported videos are not losslessly mergeable.");
+            }
+        }
+
+        // Input files
         (unowned string)[] infiles = {};
         foreach (unowned Ffmpeg.VideoInfo item in items.data) {
             infiles += item.filepath;
         }
+
+        // Output file
+        var settings = Application.settings;
+        string outfile;
+        if (settings.get_boolean ("use-input-directory")) {
+            outfile = Path.build_filename (Path.get_dirname (first.filepath), filename);
+        } else {
+            outfile = Path.build_filename (settings.get_string ("output-directory"), filename);
+        }
+
+        string suffix = "." + first.format;
+        if (!outfile.has_suffix (suffix)) {
+            outfile += suffix;
+        }
         
+        // Merge
         yield Ffmpeg.merge (infiles, outfile, items[0].format);
     }
 

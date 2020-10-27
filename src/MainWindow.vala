@@ -377,4 +377,17 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             }
         }
     }
+
+
+    // Merge!
+    [GtkCallback] private void on_merger_start_button_clicked () {
+        merger.run_lossless_merge.begin (merger_outfile_entry.text, (obj, res) => {
+            try {
+                merger.run_lossless_merge.end (res);
+                Dialogs.message (this, Gtk.MessageType.INFO, _("Merge finished!"));
+            } catch (Error e) {
+                Dialogs.message (this, Gtk.MessageType.ERROR, e.message);
+            }
+        });
+    }
 }
