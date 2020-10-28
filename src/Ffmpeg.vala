@@ -200,8 +200,8 @@ namespace VideoSplitter.Ffmpeg {
     }
 
 
-    // Merge videos
-    public async void merge (string[] infiles, string outfile, string format) throws Error {
+    // Losslessly merge videos
+    public async void lossless_merge (string[] infiles, string outfile, string format) throws Error {
 
         // FFMpeg args
         (unowned string)[] args = {
@@ -227,5 +227,53 @@ namespace VideoSplitter.Ffmpeg {
 
         // Run ffmpeg
         yield Utils.run_process (args, concat_text);
+    }
+
+
+    // Merge videos
+    public async void merge (string[] infiles, string outfile, string format) throws Error {
+
+        // FFMpeg args
+        var args = new GenericArray<unowned string?> ();
+        args.add ("ffmpeg");
+        args.add ("-hide_banner");
+        args.add ("-loglevel");
+        args.add ("warning");
+
+        var filter_opt = new StringBuilder ();
+
+        // Input files
+        for (int i = 0; i < infiles.length; i++) {
+            args.add ("-i");
+            args.add (infiles[i]);
+            filter_opt.append_printf ("[%d:v] [%d:a] ", i, i);
+        }
+
+        // Concat filter options
+        filter_opt.append_printf ("concat=n=%d:v=1:a=1 [v] [a]", infiles.length);
+        args.add ("-filter_complex");
+        args.add (filter_opt.str);
+        args.add ("-map");
+        args.add ("[v]");
+        args.add ("-map");
+        args.add ("[a]");
+        
+        args.add ("-ignore_unknown");
+
+        // Enable experimental operation
+        args.add ("-strict");
+        args.add ("experimental");
+
+        // Output format
+        args.add ("-f");
+        args.add (format);
+
+        // Output file
+        args.add ("-y");
+        args.add (outfile);
+        args.add (null);
+
+        // Run ffmpeg
+        yield Utils.run_process (args.data);
     }
 }

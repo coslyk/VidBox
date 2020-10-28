@@ -36,8 +36,10 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Merger widgets and controller
     private Merger merger;
-    [GtkChild] private Gtk.ListBox merger_listbox;
+    [GtkChild] private Gtk.Button merger_start_button;
     [GtkChild] private Gtk.Entry merger_outfile_entry;
+    [GtkChild] private Gtk.ListBox merger_listbox;
+    [GtkChild] private Gtk.RadioButton merger_losslessmerge_radiobutton;
         
 
     public MainWindow(Gtk.Application application) {
@@ -381,9 +383,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Merge!
     [GtkCallback] private void on_merger_start_button_clicked () {
-        merger.run_lossless_merge.begin (merger_outfile_entry.text, (obj, res) => {
+        merger_start_button.sensitive = false;
+        running_spinner.start ();
+        merger.run_merge.begin (merger_outfile_entry.text, merger_losslessmerge_radiobutton.active, (obj, res) => {
             try {
-                merger.run_lossless_merge.end (res);
+                merger_start_button.sensitive = true;
+                running_spinner.stop ();
+                merger.run_merge.end (res);
                 Dialogs.message (this, Gtk.MessageType.INFO, _("Merge finished!"));
             } catch (Error e) {
                 Dialogs.message (this, Gtk.MessageType.ERROR, e.message);

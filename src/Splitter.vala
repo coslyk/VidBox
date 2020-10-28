@@ -83,7 +83,7 @@ class VideoSplitter.Splitter : Object, ListModel {
         // Merge after cut
         if (merge) {
             string merged_file = @"$(outfile_base)_cut_merge.$(info.format)";
-            yield Ffmpeg.merge (outfiles.data, merged_file, info.format);
+            yield Ffmpeg.lossless_merge (outfiles.data, merged_file, info.format);
 
             // Remove cut files
             foreach (unowned string outfile in outfiles.data) {

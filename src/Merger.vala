@@ -70,7 +70,7 @@ public class VideoSplitter.Merger : Object, ListModel {
 
 
     // Lossless merge
-    public async void run_lossless_merge (string filename) throws Error {
+    public async void run_merge (string filename, bool lossless) throws Error {
 
         if (items.length < 2) {
             throw new MergeError.TOO_LESS_ITEMS ("Too less items for merging!");
@@ -78,9 +78,11 @@ public class VideoSplitter.Merger : Object, ListModel {
 
         // Check mergeable
         unowned Ffmpeg.VideoInfo first = items[0];
-        for (int i = 1; i < items.length; i++) {
-            if (!Ffmpeg.is_losslessly_mergeable (first, items[i])) {
-                throw new MergeError.NOT_LOSSLESSLY_MERGEABLE ("Imported videos are not losslessly mergeable.");
+        if (lossless) {
+            for (int i = 1; i < items.length; i++) {
+                if (!Ffmpeg.is_losslessly_mergeable (first, items[i])) {
+                    throw new MergeError.NOT_LOSSLESSLY_MERGEABLE ("Imported videos are not losslessly mergeable.");
+                }
             }
         }
 
@@ -105,7 +107,11 @@ public class VideoSplitter.Merger : Object, ListModel {
         }
         
         // Merge
-        yield Ffmpeg.merge (infiles, outfile, items[0].format);
+        if (lossless) {
+            yield Ffmpeg.lossless_merge (infiles, outfile, first.format);
+        } else {
+            yield Ffmpeg.merge (infiles, outfile, first.format);
+        }
     }
 
 
