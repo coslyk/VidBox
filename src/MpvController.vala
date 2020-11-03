@@ -135,6 +135,13 @@ class VideoSplitter.MpvController : Object {
     }
 
 
+    // Stop
+    public void stop () {
+        const string[] cmd = { "stop", null };
+        mpv.command_async (0, cmd);
+    }
+
+
     // Next frame
     public void next_frame () {
         mpv.command_string ("frame-step");

@@ -88,6 +88,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     }
 
     [GtkCallback] void on_back_button_clicked () {
+        mpv.stop ();
         main_stack.visible_child_name = "home_page";
         back_button.visible = false;
         split_button.visible = false;
