@@ -70,7 +70,7 @@ public class VideoSplitter.Merger : Object, ListModel {
 
 
     // Lossless merge
-    public async void run_merge (string filename, bool lossless) throws Error {
+    public async void run_merge (string filename, bool lossless, int64 width, int64 height) throws Error {
 
         if (items.length < 2) {
             throw new MergeError.TOO_LESS_ITEMS ("Too less items for merging!");
@@ -110,7 +110,7 @@ public class VideoSplitter.Merger : Object, ListModel {
         if (lossless) {
             yield Ffmpeg.lossless_merge (infiles, outfile, first.format);
         } else {
-            yield Ffmpeg.merge (infiles, outfile, first.format);
+            yield Ffmpeg.merge (items.data, outfile, first.format, width, height);
         }
     }
 

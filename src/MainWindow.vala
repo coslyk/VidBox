@@ -40,6 +40,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.Entry merger_outfile_entry;
     [GtkChild] private Gtk.ListBox merger_listbox;
     [GtkChild] private Gtk.RadioButton merger_losslessmerge_radiobutton;
+    [GtkChild] private Gtk.Adjustment merger_width_adjustment;
+    [GtkChild] private Gtk.Adjustment merger_height_adjustment;
         
 
     public MainWindow(Gtk.Application application) {
@@ -386,7 +388,12 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkCallback] private void on_merger_start_button_clicked () {
         merger_start_button.sensitive = false;
         running_spinner.start ();
-        merger.run_merge.begin (merger_outfile_entry.text, merger_losslessmerge_radiobutton.active, (obj, res) => {
+        merger.run_merge.begin (
+            merger_outfile_entry.text,
+            merger_losslessmerge_radiobutton.active,
+            (int64) merger_width_adjustment.value,
+            (int64) merger_height_adjustment.value,
+            (obj, res) => {
             try {
                 merger_start_button.sensitive = true;
                 running_spinner.stop ();

@@ -126,4 +126,57 @@ namespace VideoSplitter.Utils {
         Process.close_pid (child_pid);
         return outstr;
     }
+
+
+    // Run external program and watch the output
+    public async int run_process_watch_output (string[] args, IOFunc? out_cb, IOFunc? err_cb) throws Error {
+
+        SourceFunc callback = run_process_watch_output.callback;
+        Pid child_pid;
+        int standard_output;
+        int standard_error;
+        int[] exit_status = new int[1];
+        IOChannel? out_pipe = null;
+        IOChannel? err_pipe = null;
+        Process.spawn_async_with_pipes (null,
+            args,
+            null,
+            SpawnFlags.SEARCH_PATH | SpawnFlags.DO_NOT_REAP_CHILD,
+            null,
+            out child_pid,
+            null,
+            out standard_output,
+            out standard_error
+        );
+
+        // Watch stdout
+        if (out_cb != null) {
+            out_pipe = new IOChannel.unix_new (standard_output);
+            out_pipe.add_watch (IOCondition.IN | IOCondition.HUP, out_cb);
+        }
+
+        // Watch stderr
+        if (err_cb != null) {
+            err_pipe = new IOChannel.unix_new (standard_error);
+            err_pipe.add_watch (IOCondition.IN | IOCondition.HUP, err_cb);
+        }
+
+        // Wait until finish
+        ChildWatch.add (child_pid, (pid, status) => {
+            exit_status[0] = status;
+            Idle.add ((owned) callback);
+        });
+        yield;
+
+        if (out_pipe != null) {
+            out_pipe.shutdown (false);
+        }
+
+        if (err_pipe != null) {
+            err_pipe.shutdown (false);
+        }
+        
+        Process.close_pid (child_pid);
+        return exit_status[0];
+    }
 }

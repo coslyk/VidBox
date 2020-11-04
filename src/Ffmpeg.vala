@@ -231,26 +231,38 @@ namespace VideoSplitter.Ffmpeg {
 
 
     // Merge videos
-    public async void merge (string[] infiles, string outfile, string format) throws Error {
+    public async void merge (VideoInfo[] infiles, string outfile, string format, int64 width, int64 height) throws Error {
 
         // FFMpeg args
         var args = new GenericArray<unowned string?> ();
         args.add ("ffmpeg");
         args.add ("-hide_banner");
         args.add ("-loglevel");
-        args.add ("warning");
+        args.add ("repeat+level+info");
 
         var filter_opt = new StringBuilder ();
+        var concat_opt = new StringBuilder ();
 
         // Input files
-        for (int i = 0; i < infiles.length; i++) {
+        int count = 0;
+        foreach (unowned VideoInfo infile in infiles) {
             args.add ("-i");
-            args.add (infiles[i]);
-            filter_opt.append_printf ("[%d:v] [%d:a] ", i, i);
+            args.add (infile.filepath);
+            if (infile.width != width || infile.height != height) {
+                filter_opt.append_printf (
+                    "[%d:v]scale=%lld:%lld:force_original_aspect_ratio=decrease,pad=%lld:%lld:(ow-iw)/2:(oh-ih)/2[v%d];",
+                    count, width, height, width, height, count
+                );
+                concat_opt.append_printf ("[v%d][%d:a]", count, count);
+            } else {
+                concat_opt.append_printf ("[%d:v][%d:a]", count, count);
+            }
+            count++;
         }
 
         // Concat filter options
-        filter_opt.append_printf ("concat=n=%d:v=1:a=1 [v] [a]", infiles.length);
+        concat_opt.append_printf ("concat=n=%d:v=1:a=1[v][a]", infiles.length);
+        filter_opt.append (concat_opt.str);
         args.add ("-filter_complex");
         args.add (filter_opt.str);
         args.add ("-map");
@@ -271,9 +283,27 @@ namespace VideoSplitter.Ffmpeg {
         // Output file
         args.add ("-y");
         args.add (outfile);
+
         args.add (null);
 
         // Run ffmpeg
-        yield Utils.run_process (args.data);
+        int ret = yield Utils.run_process_watch_output (args.data, null, (channel, condition) => {
+		    string str_return = null;
+            if (condition == IOCondition.HUP) {
+                return false;
+            }
+            try {
+                IOStatus status = channel.read_line (out str_return, null, null);
+                print ("%s", str_return);
+                return status == IOStatus.NORMAL;
+            } catch (Error e) {
+                printerr ("%s", e.message);
+                return false;
+            }
+        });
+
+        if (ret != 0) {
+            throw new FfmpegError.CONVERT_FAILED (_("Cannot merge file!"));
+        }
     }
 }
