@@ -220,14 +220,13 @@ namespace VideoSplitter.Ffmpeg {
         };
 
         // Generate list of files for concat
-        var entries = new GenericArray<string> ();
+        var concat_text = new StringBuilder ();
         foreach (unowned string infile in infiles) {
-            entries.add ("file '%s'".printf (infile.replace ("'", "'\\''")));
+            concat_text.append_printf ("file '%s'\n", infile.replace ("'", "'\\''"));
         }
-        var concat_text = string.joinv ("\n", entries.data);
 
         // Run ffmpeg
-        yield Utils.run_process (args, concat_text);
+        yield Utils.run_process (args, concat_text.str);
     }
 
 
