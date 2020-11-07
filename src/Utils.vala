@@ -42,7 +42,7 @@ namespace VideoSplitter.Utils {
 
         unowned Gdk.Display display = Gdk.Display.get_default ();
         if (!Gdk.Wayland.is_wayland_display (display)) {
-            return Gdk.X11Display.get_xdisplay (display);
+            return Gdk.X11.get_default_xdisplay ();
         } else {
             return null;
         }
