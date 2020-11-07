@@ -16,11 +16,12 @@
 
 namespace VideoSplitter.Ffmpeg {
 
-    errordomain FfmpegError {
+    public errordomain FfmpegError {
         VIDEO_PARSE_FAILED,
         CONVERT_FAILED
     }
 
+    public delegate void UpdateFunc (double progress);
 
     public class VideoInfo : Object {
         public string filepath;
@@ -231,7 +232,7 @@ namespace VideoSplitter.Ffmpeg {
 
 
     // Merge videos
-    public async void merge (VideoInfo[] infiles, string outfile, string format, int64 width, int64 height) throws Error {
+    public async void merge (VideoInfo[] infiles, string outfile, string format, int64 width, int64 height, UpdateFunc cb) throws Error {
 
         // FFMpeg args
         var args = new GenericArray<unowned string?> ();
@@ -245,6 +246,7 @@ namespace VideoSplitter.Ffmpeg {
 
         // Input files
         int count = 0;
+        double duration = 0;
         foreach (unowned VideoInfo infile in infiles) {
             args.add ("-i");
             args.add (infile.filepath);
@@ -258,6 +260,7 @@ namespace VideoSplitter.Ffmpeg {
                 concat_opt.append_printf ("[%d:v][%d:a]", count, count);
             }
             count++;
+            duration += infile.duration;
         }
 
         // Concat filter options
@@ -288,14 +291,22 @@ namespace VideoSplitter.Ffmpeg {
 
         // Run ffmpeg
         int ret = yield Utils.run_process_watch_output (args.data, null, (channel, condition) => {
-		    string str_return = null;
+            char buffer[1024];
+            size_t len;
             if (condition == IOCondition.HUP) {
                 return false;
             }
             try {
-                IOStatus status = channel.read_line (out str_return, null, null);
-                print ("%s", str_return);
-                return status == IOStatus.NORMAL;
+                channel.read_chars (buffer, out len);
+                buffer[len] = 0;
+                MatchInfo match;
+                if (/time=(\d+):(\d+):(\d+)/.match ((string) buffer, 0, out match)) {
+                    double finished = double.parse (match.fetch (1)) * 3600 +
+                                      double.parse (match.fetch (2)) * 60 +
+                                      double.parse (match.fetch (3));
+                    cb (finished / duration);
+                }
+                return true;
             } catch (Error e) {
                 printerr ("%s", e.message);
                 return false;

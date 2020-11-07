@@ -20,6 +20,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Common widgets
     [GtkChild] private Gtk.Button back_button;
     [GtkChild] private Gtk.HeaderBar header_bar;
+    [GtkChild] private Gtk.Label progress_label;
     [GtkChild] private Gtk.Spinner running_spinner;
     [GtkChild] private Gtk.Stack main_stack;
 
@@ -64,6 +65,9 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
         // Merger
         merger = new Merger ();
+        merger.progress_updated.connect ((progress) => {
+            progress_label.label = ((int) (progress * 100)).to_string () + "%";
+        });
         merger_listbox.bind_model (merger, (item) => {
             return new Gtk.Label (((Ffmpeg.VideoInfo) item).filepath);
         });
@@ -387,6 +391,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Merge!
     [GtkCallback] private void on_merger_start_button_clicked () {
         merger_start_button.sensitive = false;
+        progress_label.visible = true;
         running_spinner.start ();
         merger.run_merge.begin (
             merger_outfile_entry.text,
@@ -396,6 +401,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             (obj, res) => {
             try {
                 merger_start_button.sensitive = true;
+                progress_label.visible = false;
                 running_spinner.stop ();
                 merger.run_merge.end (res);
                 Dialogs.message (this, Gtk.MessageType.INFO, _("Merge finished!"));

@@ -152,12 +152,14 @@ namespace VideoSplitter.Utils {
         // Watch stdout
         if (out_cb != null) {
             out_pipe = new IOChannel.unix_new (standard_output);
+            out_pipe.set_flags (IOFlags.NONBLOCK);
             out_pipe.add_watch (IOCondition.IN | IOCondition.HUP, out_cb);
         }
 
         // Watch stderr
         if (err_cb != null) {
             err_pipe = new IOChannel.unix_new (standard_error);
+            err_pipe.set_flags (IOFlags.NONBLOCK);
             err_pipe.add_watch (IOCondition.IN | IOCondition.HUP, err_cb);
         }
 

@@ -160,6 +160,16 @@
             <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkLabel" id="progress_label">
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">100%</property>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
       </object>
     </child>
     <child>

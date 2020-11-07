@@ -23,6 +23,8 @@ public class VideoSplitter.Merger : Object, ListModel {
 
     private GenericArray<Ffmpeg.VideoInfo> items = new GenericArray<Ffmpeg.VideoInfo> ();
 
+    public signal void progress_updated (double progress);
+
     // Add item
     public void add_item (string filepath) throws Error {
         var item = Ffmpeg.parse_video (filepath);
@@ -86,12 +88,6 @@ public class VideoSplitter.Merger : Object, ListModel {
             }
         }
 
-        // Input files
-        (unowned string)[] infiles = {};
-        foreach (unowned Ffmpeg.VideoInfo item in items.data) {
-            infiles += item.filepath;
-        }
-
         // Output file
         var settings = Application.settings;
         string outfile;
@@ -108,9 +104,16 @@ public class VideoSplitter.Merger : Object, ListModel {
         
         // Merge
         if (lossless) {
+            // Input files
+            (unowned string)[] infiles = {};
+            foreach (unowned Ffmpeg.VideoInfo item in items.data) {
+                infiles += item.filepath;
+            }
             yield Ffmpeg.lossless_merge (infiles, outfile, first.format);
         } else {
-            yield Ffmpeg.merge (items.data, outfile, first.format, width, height);
+            yield Ffmpeg.merge (items.data, outfile, first.format, width, height, (progress) => {
+                progress_updated (progress);
+            });
         }
     }
 
