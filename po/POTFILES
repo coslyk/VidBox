@@ -1,5 +1,6 @@
 src/AboutDialog.vala
 src/Application.vala
+src/Dialogs.vala
 src/Ffmpeg.vala
 src/MainWindow.vala
 src/SplitterItem.vala

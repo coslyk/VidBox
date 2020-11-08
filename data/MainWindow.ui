@@ -223,7 +223,7 @@
           </object>
           <packing>
             <property name="name">home_page</property>
-            <property name="title" translatable="yes">Homepage</property>
+            <property name="title">Homepage</property>
           </packing>
         </child>
         <child>
@@ -578,7 +578,7 @@
           </object>
           <packing>
             <property name="name">merger_page</property>
-            <property name="title" translatable="yes">Merger</property>
+            <property name="title">Merger</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -864,7 +864,7 @@
           </object>
           <packing>
             <property name="name">splitter_page</property>
-            <property name="title" translatable="yes">Splitter</property>
+            <property name="title">Splitter</property>
             <property name="position">2</property>
           </packing>
         </child>
