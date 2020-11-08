@@ -448,8 +448,8 @@
                     <property name="focus_on_click">False</property>
                     <property name="active">0</property>
                     <items>
-                      <item id="format-mp4" translatable="yes">mp4</item>
-                      <item id="format-flv" translatable="yes">flv</item>
+                      <item id="mp4">mp4</item>
+                      <item id="flv">flv</item>
                     </items>
                   </object>
                   <packing>

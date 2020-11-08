@@ -38,6 +38,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     // Merger widgets and controller
     private Merger merger;
     [GtkChild] private Gtk.Button merger_start_button;
+    [GtkChild] private Gtk.ComboBox merger_format_combobox;
     [GtkChild] private Gtk.Entry merger_outfile_entry;
     [GtkChild] private Gtk.ListBox merger_listbox;
     [GtkChild] private Gtk.RadioButton merger_losslessmerge_radiobutton;
@@ -398,6 +399,7 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             merger_losslessmerge_radiobutton.active,
             (int64) merger_width_adjustment.value,
             (int64) merger_height_adjustment.value,
+            merger_format_combobox.active_id,
             (obj, res) => {
             try {
                 merger_start_button.sensitive = true;

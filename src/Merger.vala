@@ -72,7 +72,7 @@ public class VideoSplitter.Merger : Object, ListModel {
 
 
     // Lossless merge
-    public async void run_merge (string filename, bool lossless, int64 width, int64 height) throws Error {
+    public async void run_merge (string filename, bool lossless, int64 width, int64 height, string format) throws Error {
 
         if (items.length < 2) {
             throw new MergeError.TOO_LESS_ITEMS ("Too less items for merging!");
@@ -97,7 +97,7 @@ public class VideoSplitter.Merger : Object, ListModel {
             outfile = Path.build_filename (settings.get_string ("output-directory"), filename);
         }
 
-        string suffix = "." + first.format;
+        string suffix = "." + format;
         if (!outfile.has_suffix (suffix)) {
             outfile += suffix;
         }
@@ -109,9 +109,9 @@ public class VideoSplitter.Merger : Object, ListModel {
             foreach (unowned Ffmpeg.VideoInfo item in items.data) {
                 infiles += item.filepath;
             }
-            yield Ffmpeg.lossless_merge (infiles, outfile, first.format);
+            yield Ffmpeg.lossless_merge (infiles, outfile, format);
         } else {
-            yield Ffmpeg.merge (items.data, outfile, first.format, width, height, (progress) => {
+            yield Ffmpeg.merge (items.data, outfile, format, width, height, (progress) => {
                 progress_updated (progress);
             });
         }
