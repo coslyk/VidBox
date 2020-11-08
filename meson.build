@@ -1,5 +1,9 @@
 # Project info
-project('com.github.coslyk.VideoSplitter', 'vala', 'c', version: '0.1')
+project(
+    'com.github.coslyk.VideoSplitter', 'vala', 'c',
+    version: '0.1',
+    meson_version : '>= 0.46'
+)
 
 conf_data = configuration_data()
 conf_data.set('APP_ID', meson.project_name())
