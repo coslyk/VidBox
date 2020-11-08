@@ -4,6 +4,6 @@
     <file>MainWindow.ui</file>
     <file>Menus.ui</file>
     <file>PreferenceDialog.ui</file>
-    <file alias="logo.png">com.github.coslyk.VideoSplitter.png</file>
+    <file>logo.png</file>
   </gresource>
 </gresources>

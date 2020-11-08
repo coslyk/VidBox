@@ -1,7 +1,7 @@
 
 #Translate and install .desktop file
 i18n.merge_file(
-    input: meson.project_name() + '.desktop.in',
+    input: 'app.desktop.in',
     output: meson.project_name() + '.desktop',
     po_dir: join_paths(meson.source_root(), 'po'),
     type: 'desktop',
@@ -11,7 +11,7 @@ i18n.merge_file(
 
 #Translate and install our .appdata file
 i18n.merge_file(
-    input: meson.project_name() + '.appdata.xml.in',
+    input: 'app.appdata.xml.in',
     output: meson.project_name() + '.appdata.xml',
     po_dir: join_paths(meson.source_root(), 'po'),
     install: true,
@@ -20,12 +20,14 @@ i18n.merge_file(
 
 # Install logo
 install_data(
-    meson.project_name() + '.png',
+    'logo.png',
+    rename: meson.project_name() + '.png',
     install_dir: join_paths(get_option('datadir'), 'icons')
 )
 
 # Install GSettings schema
 install_data(
-    meson.project_name() + '.gschema.xml',
+    'app.gschema.xml',
+    rename: meson.project_name() + '.gschema.xml',
     install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )

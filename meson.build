@@ -13,7 +13,7 @@ add_project_arguments(['--vapidir', join_paths(meson.source_root(), 'vapi')], la
 # Compile resource files
 gnome = import('gnome')
 videosplitter_gresources = gnome.compile_resources(
-    'videosplitter_gresources', join_paths('data', meson.project_name() + '.gresource.xml'),
+    'videosplitter_gresources', join_paths('data', 'app.gresource.xml'),
     source_dir: 'data'
 )
 

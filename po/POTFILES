@@ -1,9 +1,10 @@
 src/AboutDialog.vala
 src/Application.vala
+src/Ffmpeg.vala
 src/MainWindow.vala
-src/TaskItem.vala
+src/SplitterItem.vala
 data/MainWindow.ui
 data/Menus.ui
 data/PreferenceDialog.ui
-data/com.github.coslyk.VideoSplitter.desktop.in
-data/com.github.coslyk.VideoSplitter.appdata.xml.in
+data/app.desktop.in
+data/app.appdata.xml.in
