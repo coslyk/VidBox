@@ -44,6 +44,8 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     [GtkChild] private Gtk.RadioButton merger_losslessmerge_radiobutton;
     [GtkChild] private Gtk.Adjustment merger_width_adjustment;
     [GtkChild] private Gtk.Adjustment merger_height_adjustment;
+    [GtkChild] private Gtk.SpinButton merger_width_spinbutton;
+    [GtkChild] private Gtk.SpinButton merger_height_spinbutton;
         
 
     public MainWindow(Gtk.Application application) {
@@ -72,6 +74,18 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
         merger_listbox.bind_model (merger, (item) => {
             return new Gtk.Label (((Ffmpeg.VideoInfo) item).filepath);
         });
+        merger_losslessmerge_radiobutton.bind_property(
+            "active",
+            merger_width_spinbutton,
+            "sensitive",
+            BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
+        );
+        merger_losslessmerge_radiobutton.bind_property(
+            "active",
+            merger_height_spinbutton,
+            "sensitive",
+            BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE
+        );
 
         // Logo
         try {
