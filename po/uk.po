@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.coslyk.VideoSplitter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 11:25+0100\n"
+"POT-Creation-Date: 2020-11-29 13:23+0100\n"
 "PO-Revision-Date: 2020-09-29 16:44+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -59,23 +59,23 @@ msgstr ""
 msgid "Cannot merge file!"
 msgstr ""
 
-#: src/MainWindow.vala:176
+#: src/MainWindow.vala:190
 msgid "Error parsing file: "
 msgstr ""
 
-#: src/MainWindow.vala:314
+#: src/MainWindow.vala:328
 msgid "Finished!"
 msgstr ""
 
-#: src/MainWindow.vala:318
+#: src/MainWindow.vala:332
 msgid "Fails to cut: "
 msgstr ""
 
-#: src/MainWindow.vala:347
+#: src/MainWindow.vala:361
 msgid "Cannot add file: "
 msgstr ""
 
-#: src/MainWindow.vala:409
+#: src/MainWindow.vala:423
 msgid "Merge finished!"
 msgstr ""
 
@@ -94,103 +94,127 @@ msgstr ""
 msgid "100%"
 msgstr ""
 
-#: data/MainWindow.ui:190
+#: data/MainWindow.ui:208
+msgid "A tiny video toolbox"
+msgstr ""
+
+#: data/MainWindow.ui:218
 msgid "Split videos"
 msgstr ""
 
-#: data/MainWindow.ui:208
+#: data/MainWindow.ui:236
 msgid "Merge videos"
 msgstr ""
 
-#: data/MainWindow.ui:243
+#: data/MainWindow.ui:271
 msgid "Files to process"
 msgstr ""
 
-#: data/MainWindow.ui:352
+#: data/MainWindow.ui:293
+msgid "Add item"
+msgstr ""
+
+#: data/MainWindow.ui:311
+msgid "Remove selected item"
+msgstr ""
+
+#: data/MainWindow.ui:328
+msgid "Remove all items"
+msgstr ""
+
+#: data/MainWindow.ui:345
+msgid "Move up"
+msgstr ""
+
+#: data/MainWindow.ui:363
+msgid "Move down"
+msgstr ""
+
+#: data/MainWindow.ui:385
 msgid "Mode"
 msgstr ""
 
-#: data/MainWindow.ui:372
+#: data/MainWindow.ui:405
 msgid "Lossless merge"
 msgstr ""
 
-#: data/MainWindow.ui:388
+#: data/MainWindow.ui:421
 msgid "Normal merge"
 msgstr ""
 
-#: data/MainWindow.ui:413
+#: data/MainWindow.ui:446
 msgid "Options"
 msgstr ""
 
-#: data/MainWindow.ui:436
+#: data/MainWindow.ui:469
 msgid "Format"
 msgstr ""
 
-#: data/MainWindow.ui:464
+#: data/MainWindow.ui:497
 msgid "Width"
 msgstr ""
 
-#: data/MainWindow.ui:487
+#: data/MainWindow.ui:520
 msgid "Height"
 msgstr ""
 
-#: data/MainWindow.ui:524
+#: data/MainWindow.ui:557
 msgid "Start"
 msgstr ""
 
-#: data/MainWindow.ui:541
+#: data/MainWindow.ui:574
 msgid "Output file"
 msgstr ""
 
-#: data/MainWindow.ui:614
+#: data/MainWindow.ui:647
 msgid "Segments to export:"
 msgstr ""
 
-#: data/MainWindow.ui:641
+#: data/MainWindow.ui:674
 msgid "Add segment"
 msgstr ""
 
-#: data/MainWindow.ui:657
+#: data/MainWindow.ui:690
 msgid "Remove selected segment"
 msgstr ""
 
-#: data/MainWindow.ui:673
+#: data/MainWindow.ui:706
 msgid "Remove all segments"
 msgstr ""
 
-#: data/MainWindow.ui:716
+#: data/MainWindow.ui:749
 msgid "Jump to start position"
 msgstr ""
 
-#: data/MainWindow.ui:733
+#: data/MainWindow.ui:766
 msgid "Set current position as start position"
 msgstr ""
 
-#: data/MainWindow.ui:749
+#: data/MainWindow.ui:782
 msgid "Start position"
 msgstr ""
 
-#: data/MainWindow.ui:763
+#: data/MainWindow.ui:796
 msgid "Previous frame"
 msgstr ""
 
-#: data/MainWindow.ui:780
+#: data/MainWindow.ui:813
 msgid "Play / Pause"
 msgstr ""
 
-#: data/MainWindow.ui:798
+#: data/MainWindow.ui:831
 msgid "Next frame"
 msgstr ""
 
-#: data/MainWindow.ui:814
+#: data/MainWindow.ui:847
 msgid "End position"
 msgstr ""
 
-#: data/MainWindow.ui:828
+#: data/MainWindow.ui:861
 msgid "Set current position as end position"
 msgstr ""
 
-#: data/MainWindow.ui:845
+#: data/MainWindow.ui:878
 msgid "Jump to end position"
 msgstr ""
 

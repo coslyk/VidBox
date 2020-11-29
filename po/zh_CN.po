@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.coslyk.VideoSplitter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-08 11:25+0100\n"
-"PO-Revision-Date: 2020-11-08 11:24+0100\n"
+"POT-Creation-Date: 2020-11-29 13:23+0100\n"
+"PO-Revision-Date: 2020-11-29 13:23+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: zh_CN\n"
@@ -58,23 +58,23 @@ msgstr "打开文件"
 msgid "Cannot merge file!"
 msgstr "无法合并文件！"
 
-#: src/MainWindow.vala:176
+#: src/MainWindow.vala:190
 msgid "Error parsing file: "
 msgstr "解析文件错误： "
 
-#: src/MainWindow.vala:314
+#: src/MainWindow.vala:328
 msgid "Finished!"
 msgstr "已完成！"
 
-#: src/MainWindow.vala:318
+#: src/MainWindow.vala:332
 msgid "Fails to cut: "
 msgstr "剪切失败： "
 
-#: src/MainWindow.vala:347
+#: src/MainWindow.vala:361
 msgid "Cannot add file: "
 msgstr "无法添加文件： "
 
-#: src/MainWindow.vala:409
+#: src/MainWindow.vala:423
 msgid "Merge finished!"
 msgstr "合并完成！"
 
@@ -95,103 +95,127 @@ msgstr "剪切"
 msgid "100%"
 msgstr ""
 
-#: data/MainWindow.ui:190
+#: data/MainWindow.ui:208
+msgid "A tiny video toolbox"
+msgstr "一个小巧的视频工具箱"
+
+#: data/MainWindow.ui:218
 msgid "Split videos"
 msgstr "切割视频"
 
-#: data/MainWindow.ui:208
+#: data/MainWindow.ui:236
 msgid "Merge videos"
 msgstr "合并视频"
 
-#: data/MainWindow.ui:243
+#: data/MainWindow.ui:271
 msgid "Files to process"
 msgstr "需处理的文件"
 
-#: data/MainWindow.ui:352
+#: data/MainWindow.ui:293
+msgid "Add item"
+msgstr "添加项目"
+
+#: data/MainWindow.ui:311
+msgid "Remove selected item"
+msgstr "移除选中的项目"
+
+#: data/MainWindow.ui:328
+msgid "Remove all items"
+msgstr "移除所有项目"
+
+#: data/MainWindow.ui:345
+msgid "Move up"
+msgstr "上移"
+
+#: data/MainWindow.ui:363
+msgid "Move down"
+msgstr "下移"
+
+#: data/MainWindow.ui:385
 msgid "Mode"
 msgstr "模式"
 
-#: data/MainWindow.ui:372
+#: data/MainWindow.ui:405
 msgid "Lossless merge"
 msgstr "无损合并"
 
-#: data/MainWindow.ui:388
+#: data/MainWindow.ui:421
 msgid "Normal merge"
 msgstr "普通合并"
 
-#: data/MainWindow.ui:413
+#: data/MainWindow.ui:446
 msgid "Options"
 msgstr "选项"
 
-#: data/MainWindow.ui:436
+#: data/MainWindow.ui:469
 msgid "Format"
 msgstr "格式"
 
-#: data/MainWindow.ui:464
+#: data/MainWindow.ui:497
 msgid "Width"
 msgstr "宽"
 
-#: data/MainWindow.ui:487
+#: data/MainWindow.ui:520
 msgid "Height"
 msgstr "高"
 
-#: data/MainWindow.ui:524
+#: data/MainWindow.ui:557
 msgid "Start"
 msgstr "开始"
 
-#: data/MainWindow.ui:541
+#: data/MainWindow.ui:574
 msgid "Output file"
 msgstr "输出文件"
 
-#: data/MainWindow.ui:614
+#: data/MainWindow.ui:647
 msgid "Segments to export:"
 msgstr "导出的片段："
 
-#: data/MainWindow.ui:641
+#: data/MainWindow.ui:674
 msgid "Add segment"
 msgstr "添加片段"
 
-#: data/MainWindow.ui:657
+#: data/MainWindow.ui:690
 msgid "Remove selected segment"
 msgstr "移除选中的片段"
 
-#: data/MainWindow.ui:673
+#: data/MainWindow.ui:706
 msgid "Remove all segments"
 msgstr "移除所有片段"
 
-#: data/MainWindow.ui:716
+#: data/MainWindow.ui:749
 msgid "Jump to start position"
 msgstr "跳到起始位置"
 
-#: data/MainWindow.ui:733
+#: data/MainWindow.ui:766
 msgid "Set current position as start position"
 msgstr "将当前位置设为起始位置"
 
-#: data/MainWindow.ui:749
+#: data/MainWindow.ui:782
 msgid "Start position"
 msgstr "起始位置"
 
-#: data/MainWindow.ui:763
+#: data/MainWindow.ui:796
 msgid "Previous frame"
 msgstr "前一帧"
 
-#: data/MainWindow.ui:780
+#: data/MainWindow.ui:813
 msgid "Play / Pause"
 msgstr "播放 / 暂停"
 
-#: data/MainWindow.ui:798
+#: data/MainWindow.ui:831
 msgid "Next frame"
 msgstr "后一帧"
 
-#: data/MainWindow.ui:814
+#: data/MainWindow.ui:847
 msgid "End position"
 msgstr "结束位置"
 
-#: data/MainWindow.ui:828
+#: data/MainWindow.ui:861
 msgid "Set current position as end position"
 msgstr "将当前位置设为结束位置"
 
-#: data/MainWindow.ui:845
+#: data/MainWindow.ui:878
 msgid "Jump to end position"
 msgstr "跳到结束位置"
 
