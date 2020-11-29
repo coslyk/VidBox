@@ -186,6 +186,34 @@
             <property name="spacing">12</property>
             <property name="homogeneous">True</property>
             <child>
+              <object class="GtkLabel" id="title_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">Video Splitter</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Bold 18"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="desc_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_bottom">20</property>
+                <property name="label" translatable="yes">A tiny video toolbox</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="splitter_open_button">
                 <property name="label" translatable="yes">Split videos</property>
                 <property name="visible">True</property>
@@ -200,7 +228,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -217,7 +245,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
@@ -259,9 +287,10 @@
                 <child>
                   <object class="GtkButton" id="merger_add_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Add item</property>
                     <property name="image">add_image2</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
@@ -276,9 +305,10 @@
                 <child>
                   <object class="GtkButton" id="merger_remove_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected item</property>
                     <property name="image">remove_image2</property>
                     <property name="relief">none</property>
                     <signal name="clicked" handler="on_merger_remove_button_clicked" swapped="no"/>
@@ -292,9 +322,10 @@
                 <child>
                   <object class="GtkButton" id="merger_clear_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove all items</property>
                     <property name="image">clear_image2</property>
                     <property name="relief">none</property>
                     <signal name="clicked" handler="on_merger_clear_button_clicked" swapped="no"/>
@@ -308,9 +339,10 @@
                 <child>
                   <object class="GtkButton" id="merger_up_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Move up</property>
                     <property name="image">up_image</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
@@ -325,9 +357,10 @@
                 <child>
                   <object class="GtkButton" id="merger_down_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Move down</property>
                     <property name="image">down_image</property>
                     <property name="relief">none</property>
                     <property name="always_show_image">True</property>
@@ -371,7 +404,7 @@
                   <object class="GtkRadioButton" id="merger_losslessmerge_radiobutton">
                     <property name="label" translatable="yes">Lossless merge</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
@@ -387,7 +420,7 @@
                   <object class="GtkRadioButton" id="merger_merge_button">
                     <property name="label" translatable="yes">Normal merge</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
@@ -523,7 +556,7 @@
               <object class="GtkButton" id="merger_start_button">
                 <property name="label" translatable="yes">Start</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
                 <property name="halign">center</property>
