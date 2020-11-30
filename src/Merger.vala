@@ -72,7 +72,7 @@ public class VideoSplitter.Merger : Object, ListModel {
 
 
     // Lossless merge
-    public async void run_merge (string filename, bool lossless, int64 width, int64 height, string format) throws Error {
+    public async void run_merge (owned string outfile, bool lossless, int64 width, int64 height, owned string format) throws Error {
 
         if (items.length < 2) {
             throw new MergeError.TOO_LESS_ITEMS ("Too less items for merging!");
@@ -86,15 +86,6 @@ public class VideoSplitter.Merger : Object, ListModel {
                     throw new MergeError.NOT_LOSSLESSLY_MERGEABLE ("Imported videos are not losslessly mergeable.");
                 }
             }
-        }
-
-        // Output file
-        var settings = Application.settings;
-        string outfile;
-        if (settings.get_boolean ("use-input-directory")) {
-            outfile = Path.build_filename (Path.get_dirname (first.filepath), filename);
-        } else {
-            outfile = Path.build_filename (settings.get_string ("output-directory"), filename);
         }
 
         string suffix = "." + format;

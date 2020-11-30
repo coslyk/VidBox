@@ -71,4 +71,25 @@ namespace VideoSplitter.Dialogs {
         dialog.destroy ();
         return files;
     }
+
+    // Save file
+    public string? save_file (Gtk.Window? parent) {
+        var dialog = new Gtk.FileChooserDialog (
+            _("Save file"), parent, Gtk.FileChooserAction.SAVE,
+            _("Cancel"), Gtk.ResponseType.CANCEL,
+            _("Save"), Gtk.ResponseType.ACCEPT
+        );
+        dialog.do_overwrite_confirmation = true;
+        var result = dialog.run ();
+
+        // File selected?
+        if (result != Gtk.ResponseType.ACCEPT) {
+            dialog.destroy ();
+            return null;
+        }
+        
+        string? filepath = dialog.get_filename ();
+        dialog.destroy ();
+        return filepath;
+    }
 }

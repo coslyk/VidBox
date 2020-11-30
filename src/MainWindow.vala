@@ -39,7 +39,6 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
     private Merger merger;
     [GtkChild] private Gtk.Button merger_start_button;
     [GtkChild] private Gtk.ComboBox merger_format_combobox;
-    [GtkChild] private Gtk.Entry merger_outfile_entry;
     [GtkChild] private Gtk.ListBox merger_listbox;
     [GtkChild] private Gtk.RadioButton merger_losslessmerge_radiobutton;
     [GtkChild] private Gtk.Adjustment merger_width_adjustment;
@@ -349,10 +348,6 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
             return;
         }
 
-        if (merger.get_n_items () == 0) {    // First item
-            merger_outfile_entry.text = Path.get_basename (files.data) + "_merged";
-        }
-
         try {
             foreach (unowned string filepath in files) {
                 merger.add_item (filepath);
@@ -405,25 +400,32 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
     // Merge!
     [GtkCallback] private void on_merger_start_button_clicked () {
+
+        string? outfile = Dialogs.save_file (this);
+        if (outfile == null) {
+            return;
+        }
+
         merger_start_button.sensitive = false;
         progress_label.visible = true;
         running_spinner.start ();
         merger.run_merge.begin (
-            merger_outfile_entry.text,
+            (owned) outfile,
             merger_losslessmerge_radiobutton.active,
             (int64) merger_width_adjustment.value,
             (int64) merger_height_adjustment.value,
             merger_format_combobox.active_id,
             (obj, res) => {
-            try {
-                merger_start_button.sensitive = true;
-                progress_label.visible = false;
-                running_spinner.stop ();
-                merger.run_merge.end (res);
-                Dialogs.message (this, Gtk.MessageType.INFO, _("Merge finished!"));
-            } catch (Error e) {
-                Dialogs.message (this, Gtk.MessageType.ERROR, e.message);
+                try {
+                    merger_start_button.sensitive = true;
+                    progress_label.visible = false;
+                    running_spinner.stop ();
+                    merger.run_merge.end (res);
+                    Dialogs.message (this, Gtk.MessageType.INFO, _("Merge finished!"));
+                } catch (Error e) {
+                    Dialogs.message (this, Gtk.MessageType.ERROR, e.message);
+                }
             }
-        });
+        );
     }
 }

@@ -375,7 +375,7 @@
               </object>
               <packing>
                 <property name="left_attach">0</property>
-                <property name="top_attach">6</property>
+                <property name="top_attach">4</property>
               </packing>
             </child>
             <child>
@@ -543,16 +543,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="merger_outfile_entry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">5</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="merger_start_button">
                 <property name="label" translatable="yes">Start</property>
                 <property name="visible">True</property>
@@ -561,21 +551,6 @@
                 <property name="receives_default">True</property>
                 <property name="halign">center</property>
                 <signal name="clicked" handler="on_merger_start_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">6</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="merger_outfile_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Output file</property>
-                <property name="xalign">0</property>
-                <attributes>
-                  <attribute name="weight" value="semibold"/>
-                </attributes>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -605,7 +580,7 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">1</property>
-                <property name="height">5</property>
+                <property name="height">3</property>
               </packing>
             </child>
           </object>
