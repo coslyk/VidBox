@@ -21,6 +21,7 @@ after_success:
   - DESTDIR=$PWD/AppDir ninja -C build install
   - wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
   - chmod +x linuxdeploy*.AppImage
+  - export VERSION=${TRAVIS_TAG#v}
   - ./linuxdeploy-x86_64.AppImage --plugin gtk3 --appdir AppDir --executable /usr/bin/ffmpeg --executable /usr/bin/ffprobe --output appimage
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh Video_Splitter-*.AppImage
