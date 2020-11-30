@@ -141,7 +141,7 @@ namespace VideoSplitter.Ffmpeg {
 
 
     // Cut videos
-    public async void cut (string infile, string outfile, string format, double start_pos, double end_pos,
+    public async void cut (owned string infile, owned string outfile, owned string format, double start_pos, double end_pos,
                            bool keyframe_cut, bool remove_audio) throws Error {
 
         string start_pos_str = Utils.time2str (start_pos);
@@ -202,7 +202,7 @@ namespace VideoSplitter.Ffmpeg {
 
 
     // Losslessly merge videos
-    public async void lossless_merge (string[] infiles, string outfile, string format) throws Error {
+    public async void lossless_merge (string[] infiles, owned string outfile, owned string format) throws Error {
 
         // FFMpeg args
         (unowned string)[] args = {
@@ -231,7 +231,8 @@ namespace VideoSplitter.Ffmpeg {
 
 
     // Merge videos
-    public async void merge (VideoInfo[] infiles, string outfile, string format, int64 width, int64 height, UpdateFunc cb) throws Error {
+    public async void merge (VideoInfo[] infiles, owned string outfile, owned string format,
+                             int64 width, int64 height, UpdateFunc cb) throws Error {
 
         // FFMpeg args
         var args = new GenericArray<unowned string?> ();

@@ -100,9 +100,9 @@ public class VideoSplitter.Merger : Object, ListModel {
             foreach (unowned Ffmpeg.VideoInfo item in items.data) {
                 infiles += item.filepath;
             }
-            yield Ffmpeg.lossless_merge (infiles, outfile, format);
+            yield Ffmpeg.lossless_merge (infiles, (owned) outfile, (owned) format);
         } else {
-            yield Ffmpeg.merge (items.data, outfile, format, width, height, (progress) => {
+            yield Ffmpeg.merge (items.data, (owned) outfile, (owned) format, width, height, (progress) => {
                 progress_updated (progress);
             });
         }
