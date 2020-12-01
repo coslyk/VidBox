@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=VidBox
-Comment=A simple tool to split videos
+Comment=A tiny video toolbox
 Categories=Utility;
 Exec=com.github.coslyk.VidBox
 Icon=com.github.coslyk.VidBox

@@ -5,9 +5,9 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <name>VidBox</name>
-  <summary>A simple tool to split videos</summary>
+  <summary>A tiny video toolbox</summary>
   <description>
-    <p>Split your videos losslessly and conveniently.</p>
+    <p>VidBox is a tiny but useful tool that allows you to split, merge videos and so on.</p>
   </description>
   <releases>
     <release version="0.1" date="2020-09-24"/>
