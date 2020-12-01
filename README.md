@@ -14,7 +14,7 @@ Here is the development page of this project. For the program usage information,
 
 ### Installation
 
-You can download the AppImage directly from the [Release page](https://github.com/coslyk/moonplayer/releases/latest).
+You can download the AppImage directly from the [Release page](https://github.com/coslyk/vidbox/releases/latest).
 
 ### Screenshot
 
