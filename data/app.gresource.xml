@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/com/github/coslyk/VideoSplitter">
+  <gresource prefix="/com/github/coslyk/VidBox">
     <file>MainWindow.ui</file>
     <file>Menus.ui</file>
     <file>PreferenceDialog.ui</file>

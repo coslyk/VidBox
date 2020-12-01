@@ -1,5 +1,5 @@
 
-videosplitter_srcs = [
+vidbox_srcs = [
     'AboutDialog.vala',
     'Application.vala',
     'Dialogs.vala',
@@ -23,9 +23,9 @@ config_file = configure_file(
 # Create a new executable
 executable(
     meson.project_name(),
-    videosplitter_srcs,
-    videosplitter_gresources,
+    vidbox_srcs,
+    vidbox_gresources,
     config_file,
-    dependencies: videosplitter_deps,
+    dependencies: vidbox_deps,
     install: true
 )

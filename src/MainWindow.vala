@@ -14,8 +14,8 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-[GtkTemplate (ui = "/com/github/coslyk/VideoSplitter/MainWindow.ui")]
-public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
+[GtkTemplate (ui = "/com/github/coslyk/VidBox/MainWindow.ui")]
+public class VidBox.MainWindow : Gtk.ApplicationWindow {
 
     // Common widgets
     [GtkChild] private Gtk.Button back_button;
@@ -88,13 +88,13 @@ public class VideoSplitter.MainWindow : Gtk.ApplicationWindow {
 
         // Logo
         try {
-            this.icon = new Gdk.Pixbuf.from_resource ("/com/github/coslyk/VideoSplitter/logo.png");
+            this.icon = new Gdk.Pixbuf.from_resource ("/com/github/coslyk/VidBox/logo.png");
         } catch (Error e) {
             warning ("%s", e.message);
         }
 
         // Init menus
-        var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VideoSplitter/Menus.ui");
+        var menu_builder = new Gtk.Builder.from_resource ("/com/github/coslyk/VidBox/Menus.ui");
         var cut_menu_model = menu_builder.get_object ("cut-menu") as Menu;
         split_button.set_menu_model (cut_menu_model);
 

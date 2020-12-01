@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Video Splitter
+Name=VidBox
 Comment=A simple tool to split videos
 Categories=Utility;
-Exec=com.github.coslyk.VideoSplitter
-Icon=com.github.coslyk.VideoSplitter
-StartupWMClass=com.github.coslyk.VideoSplitter
+Exec=com.github.coslyk.VidBox
+Icon=com.github.coslyk.VidBox
+StartupWMClass=com.github.coslyk.VidBox
 Terminal=false
 Type=Application

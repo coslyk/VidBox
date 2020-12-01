@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component type="desktop">
-  <id>com.github.coslyk.VideoSplitter</id>
-  <launchable type="desktop-id">com.github.coslyk.VideoSplitter.desktop</launchable>
+  <id>com.github.coslyk.VidBox</id>
+  <launchable type="desktop-id">com.github.coslyk.VidBox.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
-  <name>Video Splitter</name>
+  <name>VidBox</name>
   <summary>A simple tool to split videos</summary>
   <description>
     <p>Split your videos losslessly and conveniently.</p>
@@ -12,8 +12,8 @@
   <releases>
     <release version="0.1" date="2020-09-24"/>
   </releases>
-  <url type="homepage">https://coslyk.github.io/videosplitter.html</url>
-  <url type="bugtracker">https://github.com/coslyk/videosplitter/issues</url>
+  <url type="homepage">https://coslyk.github.io/vidbox.html</url>
+  <url type="bugtracker">https://github.com/coslyk/vidbox/issues</url>
   <project_group>coslyk</project_group>
   <update_contact>cos.lyk_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1" />

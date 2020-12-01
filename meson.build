@@ -1,6 +1,6 @@
 # Project info
 project(
-    'com.github.coslyk.VideoSplitter', 'vala', 'c',
+    'com.github.coslyk.VidBox', 'vala', 'c',
     version: '0.1',
     meson_version : '>= 0.46'
 )
@@ -16,8 +16,8 @@ add_project_arguments(['--vapidir', join_paths(meson.source_root(), 'vapi')], la
 
 # Compile resource files
 gnome = import('gnome')
-videosplitter_gresources = gnome.compile_resources(
-    'videosplitter_gresources', join_paths('data', 'app.gresource.xml'),
+vidbox_gresources = gnome.compile_resources(
+    'vidbox_gresources', join_paths('data', 'app.gresource.xml'),
     source_dir: 'data'
 )
 
@@ -28,7 +28,7 @@ add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), la
 
 
 # Dependencies
-videosplitter_deps = [
+vidbox_deps = [
     dependency('epoxy'),
     dependency('gdk-wayland-3.0'),
     dependency('gdk-x11-3.0'),

@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-namespace VideoSplitter {
+namespace VidBox {
     public class Application : Gtk.Application {
 
         // Settings

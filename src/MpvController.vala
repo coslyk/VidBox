@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-class VideoSplitter.MpvController : Object {
+class VidBox.MpvController : Object {
 
     // Mpv properties
     [CCode (notify = false)]

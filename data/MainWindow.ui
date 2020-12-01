@@ -111,7 +111,7 @@
     <property name="can_focus">False</property>
     <property name="icon_name">go-up-symbolic</property>
   </object>
-  <template class="VideoSplitterMainWindow" parent="GtkApplicationWindow">
+  <template class="VidBoxMainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="default_width">800</property>
     <property name="default_height">450</property>
@@ -120,7 +120,7 @@
       <object class="GtkHeaderBar" id="header_bar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="title">Video Splitter</property>
+        <property name="title">VidBox</property>
         <property name="show_close_button">True</property>
         <child>
           <object class="GtkButton" id="back_button">
@@ -189,7 +189,7 @@
               <object class="GtkLabel" id="title_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label">Video Splitter</property>
+                <property name="label">VidBox</property>
                 <attributes>
                   <attribute name="font-desc" value="Sans Bold 18"/>
                 </attributes>

@@ -1,20 +1,20 @@
-# Video Splitter
+# VidBox
 
 A simple tool to split videos.
 
 ### Introduction
 
-Video Splitter allows you to split your videos losslessly and conveniently. It is a native GTK program written in Vala.
+VidBox allows you to split your videos losslessly and conveniently. It is a native GTK program written in Vala.
 
 ### Homepage
 
-The homepage of Video Splitter is: https://coslyk.github.io/videosplitter.html
+The homepage of VidBox is: https://coslyk.github.io/vidbox.html
 
 Here is the development page of this project. For the program usage information, please visit the homepage.
 
 ### Compile
 
-Following packages are essential for compiling Video Splitter.
+Following packages are essential for compiling VidBox.
 
 On ArchLinux:
 

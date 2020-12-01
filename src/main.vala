@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-namespace VideoSplitter {
+namespace VidBox {
 
     public static int main (string[] args) {
 

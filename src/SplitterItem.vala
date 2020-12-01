@@ -14,9 +14,9 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-using VideoSplitter.Utils;
+using VidBox.Utils;
 
-class VideoSplitter.SplitterItem : Object {
+class VidBox.SplitterItem : Object {
 
     public double start_pos { get; set construct; }
     public double end_pos { get; set construct; }

@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-namespace VideoSplitter.Dialogs {
+namespace VidBox.Dialogs {
 
     // Show message dialog
     public void message (Gtk.Window? parent, Gtk.MessageType type, string msg) {

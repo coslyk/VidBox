@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-class VideoSplitter.AboutDialog : Gtk.AboutDialog {
+class VidBox.AboutDialog : Gtk.AboutDialog {
 
     public AboutDialog (Gtk.Window window) {
         
@@ -22,10 +22,10 @@ class VideoSplitter.AboutDialog : Gtk.AboutDialog {
             transient_for: window,
             modal: true,
             destroy_with_parent: true,
-            program_name: "Video Splitter",
+            program_name: "VidBox",
             version: Build.VERSION,
             comments: _("A simple tool to split videos"),
-            website: "https://coslyk.github.io/videosplitter.html",
+            website: "https://coslyk.github.io/vidbox.html",
             website_label: _("Homepage"),
             copyright: "Copyright © 2020 coslyk",
             authors: new (unowned string)[] {"coslyk"},
@@ -35,7 +35,7 @@ class VideoSplitter.AboutDialog : Gtk.AboutDialog {
     
     construct {
         try {
-            logo = new Gdk.Pixbuf.from_resource ("/com/github/coslyk/VideoSplitter/logo.png");
+            logo = new Gdk.Pixbuf.from_resource ("/com/github/coslyk/VidBox/logo.png");
         } catch (Error e) {
             warning ("%s", e.message);
         }

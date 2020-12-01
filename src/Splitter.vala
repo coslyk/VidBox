@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-class VideoSplitter.Splitter : Object, ListModel {
+class VidBox.Splitter : Object, ListModel {
 
     public bool exact_cut { get; set; default = false; }
     public bool merge { get; set; default = false; }

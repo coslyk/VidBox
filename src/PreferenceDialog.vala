@@ -14,8 +14,8 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-[GtkTemplate (ui = "/com/github/coslyk/VideoSplitter/PreferenceDialog.ui")]
-class VideoSplitter.PreferenceDialog : Gtk.Dialog {
+[GtkTemplate (ui = "/com/github/coslyk/VidBox/PreferenceDialog.ui")]
+class VidBox.PreferenceDialog : Gtk.Dialog {
 
     [GtkChild] Gtk.CheckButton dark_mode_button;
     [GtkChild] Gtk.CheckButton same_directory_button;

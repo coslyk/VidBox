@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema path="/com/github/coslyk/VideoSplitter/" id="com.github.coslyk.VideoSplitter">
+  <schema path="/com/github/coslyk/VidBox/" id="com.github.coslyk.VidBox">
     <key name="dark-mode" type="b">
       <default>true</default>
       <summary>Use dark mode</summary>

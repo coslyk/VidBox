@@ -14,12 +14,12 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-public errordomain VideoSplitter.MergeError {
+public errordomain VidBox.MergeError {
     TOO_LESS_ITEMS,
     NOT_LOSSLESSLY_MERGEABLE
 }
 
-public class VideoSplitter.Merger : Object, ListModel {
+public class VidBox.Merger : Object, ListModel {
 
     private GenericArray<Ffmpeg.VideoInfo> items = new GenericArray<Ffmpeg.VideoInfo> ();
 

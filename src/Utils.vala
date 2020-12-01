@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-namespace VideoSplitter.Utils {
+namespace VidBox.Utils {
 
     // Convert time to format string
     public string time2str (double time) {

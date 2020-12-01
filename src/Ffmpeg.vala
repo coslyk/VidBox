@@ -14,7 +14,7 @@
  * with this program. If not, see http://www.gnu.org/licenses/.
  */
 
-namespace VideoSplitter.Ffmpeg {
+namespace VidBox.Ffmpeg {
 
     public errordomain FfmpegError {
         VIDEO_PARSE_FAILED,
