@@ -1,13 +1,13 @@
-# Bosnian translations for com.github.coslyk.VideoSplitter package.
-# Copyright (C) 2020 THE com.github.coslyk.VideoSplitter'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the com.github.coslyk.VideoSplitter package.
+# Bosnian translations for com.github.coslyk.VidBox package.
+# Copyright (C) 2020 THE com.github.coslyk.VidBox'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.coslyk.VidBox package.
 # Automatically generated, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: com.github.coslyk.VideoSplitter\n"
+"Project-Id-Version: com.github.coslyk.VidBox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 20:48+0100\n"
+"POT-Creation-Date: 2020-12-01 21:05+0100\n"
 "PO-Revision-Date: 2020-09-29 16:44+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,8 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/AboutDialog.vala:27 data/app.desktop.in:4 data/app.appdata.xml.in:8
-msgid "A simple tool to split videos"
+#: src/AboutDialog.vala:27 data/MainWindow.ui:208 data/app.desktop.in:4
+#: data/app.appdata.xml.in:8
+msgid "A tiny video toolbox"
 msgstr ""
 
 #: src/AboutDialog.vala:29
@@ -98,10 +99,6 @@ msgstr ""
 
 #: data/MainWindow.ui:166
 msgid "100%"
-msgstr ""
-
-#: data/MainWindow.ui:208
-msgid "A tiny video toolbox"
 msgstr ""
 
 #: data/MainWindow.ui:218
@@ -261,5 +258,7 @@ msgid "com.github.coslyk.VidBox"
 msgstr ""
 
 #: data/app.appdata.xml.in:10
-msgid "Split your videos losslessly and conveniently."
+msgid ""
+"VidBox is a tiny but useful tool that allows you to split, merge videos and "
+"so on."
 msgstr ""

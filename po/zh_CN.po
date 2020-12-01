@@ -1,14 +1,14 @@
-# Chinese translations for com.github.coslyk.VideoSplitter package.
-# Copyright (C) 2020 THE com.github.coslyk.VideoSplitter'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the com.github.coslyk.VideoSplitter package.
+# Chinese translations for com.github.coslyk.VidBox package.
+# Copyright (C) 2020 THE com.github.coslyk.VidBox'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.coslyk.VidBox package.
 # Automatically generated, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: com.github.coslyk.VideoSplitter\n"
+"Project-Id-Version: com.github.coslyk.VidBox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 20:48+0100\n"
-"PO-Revision-Date: 2020-12-01 20:50+0100\n"
+"POT-Creation-Date: 2020-12-01 21:05+0100\n"
+"PO-Revision-Date: 2020-12-01 21:07+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: zh_CN\n"
@@ -17,9 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: src/AboutDialog.vala:27 data/app.desktop.in:4 data/app.appdata.xml.in:8
-msgid "A simple tool to split videos"
-msgstr "一个简易的视频剪切工具"
+#: src/AboutDialog.vala:27 data/MainWindow.ui:208 data/app.desktop.in:4
+#: data/app.appdata.xml.in:8
+msgid "A tiny video toolbox"
+msgstr "一个小巧的视频工具箱"
 
 #: src/AboutDialog.vala:29
 msgid "Homepage"
@@ -102,10 +103,6 @@ msgstr "剪切"
 #: data/MainWindow.ui:166
 msgid "100%"
 msgstr ""
-
-#: data/MainWindow.ui:208
-msgid "A tiny video toolbox"
-msgstr "一个小巧的视频工具箱"
 
 #: data/MainWindow.ui:218
 msgid "Split videos"
@@ -264,8 +261,7 @@ msgid "com.github.coslyk.VidBox"
 msgstr ""
 
 #: data/app.appdata.xml.in:10
-msgid "Split your videos losslessly and conveniently."
-msgstr "方便、无损地切割视频。"
-
-#~ msgid "Output file"
-#~ msgstr "输出文件"
+msgid ""
+"VidBox is a tiny but useful tool that allows you to split, merge videos and "
+"so on."
+msgstr "VidBox 是一个小巧实用的工具，可以用于剪切、合并视频等。"

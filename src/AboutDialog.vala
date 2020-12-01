@@ -24,7 +24,7 @@ class VidBox.AboutDialog : Gtk.AboutDialog {
             destroy_with_parent: true,
             program_name: "VidBox",
             version: Build.VERSION,
-            comments: _("A simple tool to split videos"),
+            comments: _("A tiny video toolbox"),
             website: "https://coslyk.github.io/vidbox.html",
             website_label: _("Homepage"),
             copyright: "Copyright © 2020 coslyk",
