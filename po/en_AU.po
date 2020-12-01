@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.coslyk.VideoSplitter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-29 13:23+0100\n"
+"POT-Creation-Date: 2020-12-01 20:48+0100\n"
 "PO-Revision-Date: 2020-09-29 16:44+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -43,7 +43,7 @@ msgstr "Quit"
 msgid "Open file"
 msgstr "Open file"
 
-#: src/Dialogs.vala:37 src/Dialogs.vala:58
+#: src/Dialogs.vala:37 src/Dialogs.vala:58 src/Dialogs.vala:79
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -56,29 +56,38 @@ msgstr "Open"
 msgid "Open files"
 msgstr "Open file"
 
-#: src/Ffmpeg.vala:316
+#: src/Dialogs.vala:78
+#, fuzzy
+msgid "Save file"
+msgstr "Open file"
+
+#: src/Dialogs.vala:80
+msgid "Save"
+msgstr ""
+
+#: src/Ffmpeg.vala:317
 msgid "Cannot merge file!"
 msgstr ""
 
-#: src/MainWindow.vala:190
+#: src/MainWindow.vala:189
 #, fuzzy
 msgid "Error parsing file: "
 msgstr "Error parsing file: %s"
 
-#: src/MainWindow.vala:328
+#: src/MainWindow.vala:327
 msgid "Finished!"
 msgstr "Finished!"
 
-#: src/MainWindow.vala:332
+#: src/MainWindow.vala:331
 #, fuzzy
 msgid "Fails to cut: "
 msgstr "Fails to cut: %s"
 
-#: src/MainWindow.vala:361
+#: src/MainWindow.vala:356
 msgid "Cannot add file: "
 msgstr ""
 
-#: src/MainWindow.vala:423
+#: src/MainWindow.vala:424
 #, fuzzy
 msgid "Merge finished!"
 msgstr "Finished!"
@@ -168,64 +177,59 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
-#: data/MainWindow.ui:557
+#: data/MainWindow.ui:547
 msgid "Start"
 msgstr ""
 
-#: data/MainWindow.ui:574
-#, fuzzy
-msgid "Output file"
-msgstr "Open file"
-
-#: data/MainWindow.ui:647
+#: data/MainWindow.ui:622
 msgid "Segments to export:"
 msgstr "Segments to export:"
 
-#: data/MainWindow.ui:674
+#: data/MainWindow.ui:649
 msgid "Add segment"
 msgstr "Add segment"
 
-#: data/MainWindow.ui:690
+#: data/MainWindow.ui:665
 msgid "Remove selected segment"
 msgstr "Remove selected segment"
 
-#: data/MainWindow.ui:706
+#: data/MainWindow.ui:681
 msgid "Remove all segments"
 msgstr "Remove all segments"
 
-#: data/MainWindow.ui:749
+#: data/MainWindow.ui:724
 msgid "Jump to start position"
 msgstr "Jump to start position"
 
-#: data/MainWindow.ui:766
+#: data/MainWindow.ui:741
 msgid "Set current position as start position"
 msgstr "Set current position as start position"
 
-#: data/MainWindow.ui:782
+#: data/MainWindow.ui:757
 msgid "Start position"
 msgstr "Start position"
 
-#: data/MainWindow.ui:796
+#: data/MainWindow.ui:771
 msgid "Previous frame"
 msgstr "Previous frame"
 
-#: data/MainWindow.ui:813
+#: data/MainWindow.ui:788
 msgid "Play / Pause"
 msgstr "Play / Pause"
 
-#: data/MainWindow.ui:831
+#: data/MainWindow.ui:806
 msgid "Next frame"
 msgstr "Next frame"
 
-#: data/MainWindow.ui:847
+#: data/MainWindow.ui:822
 msgid "End position"
 msgstr "End position"
 
-#: data/MainWindow.ui:861
+#: data/MainWindow.ui:836
 msgid "Set current position as end position"
 msgstr "Set current position as end position"
 
-#: data/MainWindow.ui:878
+#: data/MainWindow.ui:853
 msgid "Jump to end position"
 msgstr "Jump to end position"
 
@@ -262,16 +266,24 @@ msgid "Choose output path"
 msgstr "Choose output path"
 
 #: data/app.desktop.in:3 data/app.appdata.xml.in:7
-msgid "Video Splitter"
-msgstr "Video Splitter"
+msgid "VidBox"
+msgstr ""
 
 #: data/app.desktop.in:7
-msgid "com.github.coslyk.VideoSplitter"
+#, fuzzy
+msgid "com.github.coslyk.VidBox"
 msgstr "com.github.coslyk.VideoSplitter"
 
 #: data/app.appdata.xml.in:10
 msgid "Split your videos losslessly and conveniently."
 msgstr "Split your videos losslessly and conveniently."
+
+#, fuzzy
+#~ msgid "Output file"
+#~ msgstr "Open file"
+
+#~ msgid "Video Splitter"
+#~ msgstr "Video Splitter"
 
 #, fuzzy
 #~ msgid "Splitter"
