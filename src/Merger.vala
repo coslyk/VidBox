@@ -75,7 +75,7 @@ public class VidBox.Merger : Object, ListModel {
     public async void run_merge (owned string outfile, bool lossless, int64 width, int64 height, owned string format) throws Error {
 
         if (items.length < 2) {
-            throw new MergeError.TOO_LESS_ITEMS ("Too less items for merging!");
+            throw new MergeError.TOO_LESS_ITEMS (_("At least 2 items need to be imported."));
         }
 
         // Check mergeable
@@ -83,7 +83,7 @@ public class VidBox.Merger : Object, ListModel {
         if (lossless) {
             for (int i = 1; i < items.length; i++) {
                 if (!Ffmpeg.is_losslessly_mergeable (first, items[i])) {
-                    throw new MergeError.NOT_LOSSLESSLY_MERGEABLE ("Imported videos are not losslessly mergeable.");
+                    throw new MergeError.NOT_LOSSLESSLY_MERGEABLE (_("Imported videos are not losslessly mergeable."));
                 }
             }
         }

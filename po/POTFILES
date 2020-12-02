@@ -3,6 +3,7 @@ src/Application.vala
 src/Dialogs.vala
 src/Ffmpeg.vala
 src/MainWindow.vala
+src/Merger.vala
 src/SplitterItem.vala
 data/MainWindow.ui
 data/Menus.ui

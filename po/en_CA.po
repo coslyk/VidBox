@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.coslyk.VidBox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 21:05+0100\n"
+"POT-Creation-Date: 2020-12-02 21:08+0100\n"
 "PO-Revision-Date: 2020-09-29 16:44+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -66,6 +66,15 @@ msgstr "Open file"
 msgid "Save"
 msgstr ""
 
+#: src/Ffmpeg.vala:68 src/Ffmpeg.vala:77
+msgid "Cannot parse the output of ffprobe."
+msgstr ""
+
+#. Check if video and audio streams are parsed
+#: src/Ffmpeg.vala:120
+msgid "Cannot extract information of streams."
+msgstr ""
+
 #: src/Ffmpeg.vala:317
 msgid "Cannot merge file!"
 msgstr ""
@@ -92,6 +101,14 @@ msgstr ""
 #, fuzzy
 msgid "Merge finished!"
 msgstr "Finished!"
+
+#: src/Merger.vala:78
+msgid "At least 2 items need to be imported."
+msgstr ""
+
+#: src/Merger.vala:86
+msgid "Imported videos are not losslessly mergeable."
+msgstr ""
 
 #: src/SplitterItem.vala:29
 #, c-format

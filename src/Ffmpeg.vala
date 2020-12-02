@@ -65,7 +65,7 @@ namespace VidBox.Ffmpeg {
         parser.load_from_data (output);
         unowned Json.Object? root = parser.get_root ().get_object ();
         if (root == null) {
-            throw new FfmpegError.VIDEO_PARSE_FAILED ("Cannot parse the output of ffprobe.");
+            throw new FfmpegError.VIDEO_PARSE_FAILED (_("Cannot parse the output of ffprobe."));
         }
 
         VideoInfo info = new VideoInfo ();
@@ -74,7 +74,7 @@ namespace VidBox.Ffmpeg {
         // Format
         unowned Json.Object? root_format = root.get_object_member ("format");
         if (root_format == null) {
-            throw new FfmpegError.VIDEO_PARSE_FAILED ("Cannot parse the output of ffprobe.");
+            throw new FfmpegError.VIDEO_PARSE_FAILED (_("Cannot parse the output of ffprobe."));
         }
 
         unowned string format_str = root_format.get_string_member ("format_name");
@@ -117,7 +117,7 @@ namespace VidBox.Ffmpeg {
 
         // Check if video and audio streams are parsed
         if (info.vcodec == null || info.acodec == null) {
-            throw new FfmpegError.VIDEO_PARSE_FAILED ("Cannot extract information of streams.");
+            throw new FfmpegError.VIDEO_PARSE_FAILED (_("Cannot extract information of streams."));
         }
 
         // Calculate hash
