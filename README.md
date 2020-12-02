@@ -18,7 +18,7 @@ You can download the AppImage directly from the [Release page](https://github.co
 
 ### Screenshot
 
-![](https://coslyk.github.io/files/videosplitter-dark.png)
+![](https://coslyk.github.io/files/vidbox-dark.png)
 
 ### Development
 
