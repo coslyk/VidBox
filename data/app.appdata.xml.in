@@ -10,10 +10,11 @@
     <p>VidBox is a tiny but useful tool that allows you to split, merge videos and so on.</p>
   </description>
   <releases>
+    <release version="0.2" date="2020-12-05"/>
     <release version="0.1" date="2020-09-24"/>
   </releases>
   <url type="homepage">https://coslyk.github.io/vidbox.html</url>
-  <url type="bugtracker">https://github.com/coslyk/vidbox/issues</url>
+  <url type="bugtracker">https://github.com/coslyk/VidBox/issues</url>
   <project_group>coslyk</project_group>
   <update_contact>cos.lyk_AT_gmail.com</update_contact>
   <content_rating type="oars-1.1" />
